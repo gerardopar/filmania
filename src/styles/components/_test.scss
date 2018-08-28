@@ -1,0 +1,16 @@
+.test__container{
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    background-color: rgb(74, 132, 219);
+}
+
+.test__img{
+    -webkit-box-shadow: 7px -1px 50px -15px rgba(0,0,0,0.58);
+    -moz-box-shadow: 7px -1px 50px -15px rgba(0,0,0,0.58);
+    box-shadow: 7px -1px 50px -15px rgba(0,0,0,0.58);
+    height: 300px;
+    width: 300px;
+    z-index: 9999;
+}
