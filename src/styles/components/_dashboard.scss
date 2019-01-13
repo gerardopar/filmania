@@ -1,0 +1,18 @@
+.layout{
+    display: flex;
+    height: 80vh;
+}
+
+.layout__col--one{
+    background-color: $navy;
+    height: 100%;
+    position: relative;
+    width: 15%;
+}
+
+.layout__col--two{
+    background-color: $off-white;
+    position: relative;
+    width: 85%;
+    overflow-y: scroll;
+}

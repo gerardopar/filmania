@@ -1,0 +1,48 @@
+.movieSearch__form--wrap{
+    align-items: center;
+    background-color: $blue;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.movieSearch__form{
+    align-items: center;
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    width: 90%;
+}
+
+.movieSearch__form--input{
+    color: whitesmoke;
+}
+
+.movieSearch__form--input::placeholder{
+    background: none;
+    background-color: none;
+    color: $navy;
+}
+
+.movieSearch__form--input{
+    color: whitesmoke;
+    border-bottom: solid 1px $navy !important;
+    height: 100% !important;
+    font-size: 4rem !important;
+    font-weight: 100;
+}
+
+.movieSearch__form input:focus + label {
+    color: rgb(29, 29, 29) !important;
+}
+/* label underline focus color */
+.movieSearch__form input:focus {
+    border-bottom: 1px solid #5c6bc0 !important;
+    box-shadow: 0 1px 0 0 rgb(29, 29, 29) !important
+}
+
+.movieSearch__form--btn{
+    background-color: rgb(104, 135, 172) !important;
+}

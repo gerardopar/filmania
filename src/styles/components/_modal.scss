@@ -1,0 +1,115 @@
+.modal__wrap{
+    align-items: center;
+    background-color: rgba(46, 46, 46, 0.85);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+// modal form 
+.modal__form{
+    align-items: center;
+    background: #141E30;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 500px;
+    padding: 10px;
+    justify-content: center;
+}
+
+// modal title
+.modal__title--wrap{
+    text-align: left;
+    margin-bottom: 50px;
+    width: 90%;
+}
+
+.modal__title{
+    border-bottom: solid 1px rgb(104, 135, 172);
+    color: $off-white;
+    display: inline-block;
+    font-weight: bold;
+}
+
+// modal input
+.modal__input--wrap{
+    margin-bottom: 50px;
+    width: 90%;
+}
+
+.modal__form input{
+    // background-color: $blue !important;
+    // border-radius: 50px !important;
+    height: 30px !important;
+    border-bottom: solid 1px $off-white !important;
+    color: $off-white !important;
+    // -webkit-border-radius: 50px !important;
+    // -moz-border-radius: 50px !important;
+    // -ms-border-radius: 50px !important;
+    // -o-border-radius: 50px !important;
+    padding-left: 10px !important;
+}
+
+.modal__form input:focus + label {
+    color: transparent !important;
+}
+/* label underline focus color */
+.modal__form input:focus {
+    border-bottom: solid 1px rgb(104, 135, 172) !important;
+    box-shadow: none !important
+}
+
+// modal label
+.modal__input--label{
+    align-items: center;
+    align-self: flex-start;
+    color: rgb(117, 117, 117);
+    display: flex;
+    font-size: 1.6rem;
+    font-weight: light;
+    margin-left: 10px;
+}
+
+.modal__input--icon{
+    color: $navy;
+}
+
+// modal form btn
+.modal__btn--wrap{
+    width: 90%;
+    text-align: right;
+}
+
+.modal__btn--login{
+    background-color: rgb(104, 135, 172) !important;
+    border: none;
+    border-radius: 2px;
+    padding: 12px 16px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+
+
+// modal btn
+.modal__btn--close{
+    background: none !important;
+    background-color: transparent !important;
+    color: $off-white;
+    font-size: 4rem;
+    border: none;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+

@@ -1,7 +1,9 @@
 *{
+    box-sizing: border-box;
     list-style: none;
     margin: 0;
     padding: 0;
+    text-decoration: none;
 }
 
 html{
@@ -9,8 +11,13 @@ html{
 }
 
 body{
-    font-family: 'Poppins', sans-serif;
+    background: #141E30;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    // background-color: rgb(104, 135, 172);
+    font-family: 'Assistant', sans-serif;
     font-size: $m-size;
+    margin: 30px;
 }
 
 button{
@@ -21,3 +28,29 @@ button:disabled{
     cursor: default;
 }
 
+// transitions 
+.trans-enter {
+    opacity: 0.01;
+}
+
+.trans-enter.trans-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+    -webkit-transition: opacity 500ms ease-in;
+    -moz-transition: opacity 500ms ease-in;
+    -ms-transition: opacity 500ms ease-in;
+    -o-transition: opacity 500ms ease-in;
+}
+
+.trans-leave {
+    opacity: 1;
+}
+
+.trans-leave.trans-leave-active {
+    opacity: 0.01;
+    transition: opacity 500ms ease-out;
+    -webkit-transition: opacity 500ms ease-out;
+    -moz-transition: opacity 500ms ease-out;
+    -ms-transition: opacity 500ms ease-out;
+    -o-transition: opacity 500ms ease-out;
+}

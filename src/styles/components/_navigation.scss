@@ -1,0 +1,35 @@
+.nav{
+    background-color: $navy;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    overflow-y: scroll;
+    width: 100%;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+
+.nav__item{
+    color: whitesmoke;
+    border-bottom: none;
+    margin-bottom: 5px;
+    padding: 12px 16px;
+    transition: all .5s ease-in;
+    -webkit-transition: all .5s ease-in;
+    -moz-transition: all .5s ease-in;
+    -ms-transition: all .5s ease-in;
+    -o-transition: all .5s ease-in;
+}
+
+.nav__item:hover{
+    background: linear-gradient(to left, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.nav__item--active {
+    background: linear-gradient(to left, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #6887ac;
+}
+

@@ -1,0 +1,108 @@
+.header{
+    align-items: center;
+    background-color: $navy;
+    border-radius: 2px;
+    display: flex;
+    height: 10vh;
+    justify-content: space-between;
+    padding: 12px 16px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+
+.header__title{
+    color: #04D473;
+    cursor: pointer;
+    border: solid 2px #04D473;
+    padding: 6px;
+}
+
+.header__img{
+    height: 50px;
+    width: 50px;
+}
+
+// header form
+.header__form{
+    align-items: center;
+    background-color: rgb(104, 135, 172);
+    border-radius: 50px;
+    display: flex;
+    flex-direction: row;
+    height: 35px;
+    justify-content: center;
+    transition: all .5s;
+    width: 45%;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+}
+.header__form:focus-within{
+    width: 50%;
+}
+
+.header__form--input{
+    border-bottom: none !important;
+    padding-left: 20px !important;
+    margin-top: 10px !important;
+}
+
+.header__form--input::placeholder{
+    color: $navy;
+}
+
+.header__form input:focus + label {
+    color: transparent !important;
+}
+/* label underline focus color */
+.header__form input:focus {
+    border-bottom: none !important;
+    box-shadow: none !important
+}
+
+// form btns
+.header__form--btn{
+    background-color: transparent !important;
+    color: $off-white !important;
+    border: none;
+    margin-right: 10px;
+}
+
+.header__form--btn--login{
+    background-color: rgb(104, 135, 172) !important;
+    margin-right: 10px;
+}
+
+.header__form--btn--signup{
+    background-color: rgb(104, 135, 172) !important;
+    margin-right: 10px;
+}
+
+.header__form--btn--favorites{
+    background-color: none !important;
+    background: none !important;
+    border: solid 1px #04D473;
+    margin-right: 10px;
+    transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+}
+
+.header__form--btn--favorites:hover{
+    background-color: #04D473 !important;
+    border: solid 1px #04D473;
+    margin-right: 10px;
+}
+
+.header__form--btn--signout{
+    background-color: orangered !important;
+}

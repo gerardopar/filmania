@@ -1,0 +1,17 @@
+.footer{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50%;
+    text-align: center;
+}
+
+.footer__img{
+    height: 125px;
+    width: 125px;
+}
+
+.footer__text{
+    color: $off-white;
+}

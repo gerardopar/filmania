@@ -1,0 +1,95 @@
+// backdrop details
+.movieDetails{
+    height: 100%;
+}
+
+.movieDetails__backdrop{
+    align-items: flex-start;
+    background-position: center;
+    background-size: cover;
+    background-repeat: none;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    justify-content: flex-end;
+    padding-left: 50px;
+    padding-bottom: 25px;
+    overflow-y: scroll;
+    position: relative;
+}
+
+.movieDetails__title{
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+.movieDetails__text{
+    color: $off-white;
+}
+
+//movie details btn 
+.movieDetails__btn--favorite--wrap{
+    border: none;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+
+.movieDetails__btn--favorite{
+    background-color: none !important;
+    background: none !important;
+    color: #04D473;
+    font-size: 3rem !important;
+    border: none;
+}
+
+.home{
+    margin-left: 10px;
+}   
+
+// content details
+.movieDetails__content--wrap{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.movieDetails__col--one{
+    align-items: flex-start;
+    display: flex;
+    background-color: $blue;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 25px;
+    padding-left: 50px;
+    padding-bottom: 25px;
+    text-align: left;
+    width: 50%;
+}
+
+.movieDetails__col--two{
+    align-items: center;
+    background-color: $blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+// trailer wrap
+.movieDetails__trailer--wrap{
+    height: 255px;
+    padding: 10px;
+    width: 90%;
+}
+
+.movieDetails__trailer{
+    height: 100%;
+    width: 100%;
+}
+
+// poster
+.movieDetails__poster{
+    height: 225px;
+    width: 150px;
+}
