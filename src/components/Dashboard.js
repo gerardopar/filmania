@@ -133,7 +133,6 @@ class Dashboard extends Component {
 
     handleHomePage(){
         this.props.history.push('/');
-        console.log('heading home!');
     }
 
     render(){

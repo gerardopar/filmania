@@ -61,7 +61,6 @@ class FavoritesPage extends Component {
             return res.json();
         })
         .then(result => {
-            console.log(result);
             this.setState({ showSignupModal: false });
         })
         .catch((err) => console.log(err));
@@ -116,7 +115,6 @@ class FavoritesPage extends Component {
             return res.json();
         })
         .then((data) => {
-            console.log(data);
             this.setState(({ movies: [...data.movies] }));
         })
         .catch((err) => {
@@ -132,7 +130,6 @@ class FavoritesPage extends Component {
 
     handleHomePage(){
         this.props.history.push('/');
-        console.log('heading home!');
     }
 
     handleDeleteMovie(e, id){
@@ -158,7 +155,6 @@ class FavoritesPage extends Component {
             return res.json();
         })
         .then((result) => {
-            console.log(result);
             
             this.setState((prevState) => ({
                 movies: prevState.movies.filter((movie) => movie._id !== id)

@@ -134,7 +134,6 @@ class AppRouter extends Component {
         this.setState(() => ({
             showMobileNav: !this.state.showMobileNav
         }));
-        console.log('button clicked');
     }
 
     handleNavCollapse(){

@@ -61,7 +61,6 @@ class HorrorPage extends Component {
             return res.json();
         })
         .then(result => {
-            console.log(result);
             this.setState({ showSignupModal: false });
         })
         .catch((err) => console.log(err));

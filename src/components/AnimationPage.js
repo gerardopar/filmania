@@ -63,7 +63,6 @@ class AnimationPage extends Component {
             return res.json();
         })
         .then(result => {
-            console.log(result);
             this.setState({ showSignupModal: false });
         })
         .catch((err) => console.log(err));
@@ -135,7 +134,6 @@ class AnimationPage extends Component {
 
     handleHomePage(){
         this.props.history.push('/');
-        console.log('heading home!');
     }
 
     render(){
