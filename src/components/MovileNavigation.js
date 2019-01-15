@@ -33,9 +33,9 @@ const MobileNavigation = (props) => (
         <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/documentary" activeClassName="nav__item--active" exact={true}>DOCUMENTARY</NavLink>
         <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/drama" activeClassName="nav__item--active" exact={true}>DRAMA</NavLink>
         <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/fantasy" activeClassName="nav__item--active" exact={true}>FANTASY</NavLink>
+        <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/horror" activeClassName="nav__item--active" exact={true}>HORROR</NavLink>
         <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/scienceFiction" activeClassName="nav__item--active" exact={true}>SCIENCE FICTION</NavLink>
         <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/thriller" activeClassName="nav__item--active" exact={true}>THRILLER</NavLink>
-        <NavLink onClick={routeContext.handleNavCollapse} className="mobile__nav--item" to="/horror" activeClassName="nav__item--active" exact={true}>HORROR</NavLink>
         <Footer />
     </ul>
     )}

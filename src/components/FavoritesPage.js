@@ -37,7 +37,7 @@ class FavoritesPage extends Component {
     // method: handles user signup
     handleSignup(e){
         e.preventDefault();
-        fetch(`http://localhost:3000/signup`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/signup`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ class FavoritesPage extends Component {
         e.preventDefault();
         let movie_title = e.target.elements.title.value;
         if(movie_title === '' || movie_title.length === 0 || movie_title === null || movie_title === undefined) {
-            console.log('no movie searched');
+            console.log('Movie does not exist!');
         } else {
 
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movie_title}&page=1&include_adult=false`, {
@@ -106,7 +106,7 @@ class FavoritesPage extends Component {
     }
 
     handleFavMovies(){
-        fetch(`http://localhost:3000/movies/favorites`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/favorites`, {
             headers: {
                 Authorization: 'Bearer ' + this.props.token, // required to authenticate the user
                 'Content-Type': 'application/json'
@@ -138,7 +138,7 @@ class FavoritesPage extends Component {
     handleDeleteMovie(e, id){
         e.preventDefault();
 
-        fetch(`http://localhost:3000/movies/deleteFav`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/deleteFav`, {
         method: 'DELETE',
         headers: {
             Authorization: 'Bearer ' + this.props.token, // required to authenticate the user

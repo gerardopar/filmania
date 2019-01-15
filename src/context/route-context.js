@@ -6,6 +6,6 @@ export default React.createContext({
     handleLoginModal: () => {}, // login modal handler
     handleLogout: () => {}, // logout handler
     isAuth: null, // isAuth state
-    showMobileNav: null,
-    handleNavCollapse: () => {}
+    showMobileNav: null, // showMobileNav state
+    handleNavCollapse: () => {} // nav collapse state
 });

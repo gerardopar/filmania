@@ -39,7 +39,7 @@ class AnimationPage extends Component {
     // method: handles user signup
     handleSignup(e){
         e.preventDefault();
-        fetch(`http://localhost:3000/signup`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/signup`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ class AnimationPage extends Component {
     handleMovies(e, pageNumber){
         let page = pageNumber;
 
-        fetch(`http://localhost:3000/movies/animation?page=${page}`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/animation?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -175,7 +175,7 @@ class AnimationPage extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
-                    
+
                     <RouteContext.Consumer>
                     {routeContext => {
                     return (

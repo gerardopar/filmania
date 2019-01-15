@@ -804,7 +804,14 @@ button:disabled {
 
 @media (max-width: 374.98px) and (orientation: portrait) {
   .movieDetails__backdrop {
-    padding-top: 420px; }
+    padding-left: 15px;
+    padding-bottom: 15px;
+    padding-top: 410px; }
+  .movieDetails__col--one {
+    padding-left: 15px;
+    padding-bottom: 15px; }
+  .movieDetails__title {
+    font-size: 2rem !important; }
   .movieDetails__content--wrap {
     flex-direction: column;
     width: 100%; }
@@ -814,7 +821,14 @@ button:disabled {
 
 @media (min-width: 375px) and (max-width: 413.98px) and (orientation: portrait) {
   .movieDetails__backdrop {
-    padding-top: 420px; }
+    padding-left: 15px;
+    padding-bottom: 15px;
+    padding-top: 410px; }
+  .movieDetails__col--one {
+    padding-left: 15px;
+    padding-bottom: 15px; }
+  .movieDetails__title {
+    font-size: 2rem !important; }
   .movieDetails__content--wrap {
     flex-direction: column;
     width: 100%; }
@@ -824,7 +838,14 @@ button:disabled {
 
 @media (min-width: 414px) and (max-width: 575.98px) and (orientation: portrait) {
   .movieDetails__backdrop {
-    padding-top: 420px; }
+    padding-left: 15px;
+    padding-bottom: 15px;
+    padding-top: 410px; }
+  .movieDetails__col--one {
+    padding-left: 15px;
+    padding-bottom: 15px; }
+  .movieDetails__title {
+    font-size: 2rem !important; }
   .movieDetails__content--wrap {
     flex-direction: column;
     width: 100%; }

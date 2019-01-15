@@ -62,7 +62,7 @@ class AppRouter extends Component {
     // method: authenticates user
     handleLogin(e){
         e.preventDefault();
-        fetch(`http://localhost:3000/login`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

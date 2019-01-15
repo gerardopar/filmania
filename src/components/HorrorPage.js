@@ -37,7 +37,7 @@ class HorrorPage extends Component {
     // method: handles user signup
     handleSignup(e){
         e.preventDefault();
-        fetch(`http://localhost:3000/signup`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/signup`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ class HorrorPage extends Component {
     handleMovies(e, pageNumber){
         let page = pageNumber;
 
-        fetch(`http://localhost:3000/movies/horror?page=${page}`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/horror?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
