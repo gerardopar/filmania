@@ -26,12 +26,16 @@ class AppRouter extends Component {
             isAuth: false,
             token: null,
             showLoginModal: false,
+            showMobileNav: false,
+            collapse: false
         }
 
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.handleAutoLogout = this.handleAutoLogout.bind(this);
         this.handleLoginModal = this.handleLoginModal.bind(this);
+        this.handleMobileNav = this.handleMobileNav.bind(this);
+        this.handleNavCollapse = this.handleNavCollapse.bind(this);
     }
 
     componentDidMount() {
@@ -124,6 +128,19 @@ class AppRouter extends Component {
         localStorage.removeItem('isAuth');
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
+    }
+
+    handleMobileNav(){
+        this.setState(() => ({
+            showMobileNav: !this.state.showMobileNav
+        }));
+        console.log('button clicked');
+    }
+
+    handleNavCollapse(){
+        this.setState(() => ({
+            showMobileNav: this.state.collapse
+        }));
     }
 
     render(){
@@ -228,7 +245,10 @@ class AppRouter extends Component {
                         handleLogin: this.handleLogin,
                         handleLoginModal: this.handleLoginModal,
                         handleLogout: this.handleLogout,
-                        isAuth: this.state.isAuth
+                        isAuth: this.state.isAuth,
+                        showMobileNav: this.state.showMobileNav,
+                        handleMobileNav: this.handleMobileNav,
+                        handleNavCollapse: this.handleNavCollapse
                     }}>
                 {routes}
             </RouteContext.Provider>

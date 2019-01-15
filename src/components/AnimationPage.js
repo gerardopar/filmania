@@ -7,8 +7,10 @@ import Header from './Header';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 import Spinner from './Spinner';
+import MobileNavigation from './MovileNavigation';
 import Navigation from './Navigation';
 import MovieList from './MovieList';
+import RouteContext from '../context/route-context';
 
 class AnimationPage extends Component {
     constructor(props){
@@ -173,6 +175,29 @@ class AnimationPage extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
+                    
+                    <RouteContext.Consumer>
+                    {routeContext => {
+                    return (
+                    <React.Fragment>
+                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
+                        <ReactCSSTransitionGroup
+                            transitionName="trans"
+                            transitionEnterTimeout={500}
+                            transitionLeaveTimeout={500}>
+                            {
+                                routeContext.showMobileNav 
+                                    ? <MobileNavigation 
+                                        handleSignupModal={this.handleSignupModal}
+                                        handleMobileNav={routeContext.handleMobileNav}/> 
+                                        : null
+                            }
+                        </ReactCSSTransitionGroup>
+                    </React.Fragment>
+                                        )}
+                    }
+                    </RouteContext.Consumer>
+
                         {
                             this.state.movies.length === 0 
                                 ? <Spinner />

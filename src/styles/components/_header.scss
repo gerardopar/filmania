@@ -106,3 +106,125 @@
 .header__form--btn--signout{
     background-color: orangered !important;
 }
+
+// * media queries
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 374.98px) and (orientation: portrait) {
+    .header__form--btn--login,
+    .header__form--btn--signup,
+    .header__form--btn--signout,
+    .header__form--btn--favorites{
+        display: none;
+    }
+
+    .header__form{
+        height: 32px;
+        width: 60%;
+    }
+
+    .header__form:focus-within{
+        width: 70%;
+    }
+
+    .header__title{
+        font-size: 2rem !important;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 413.98px) and (orientation: portrait) {
+    .header__form--btn--login,
+    .header__form--btn--signup,
+    .header__form--btn--signout,
+    .header__form--btn--favorites{
+        display: none;
+    }
+
+    .header__form{
+        height: 32px;
+        width: 60%;
+    }
+
+    .header__form:focus-within{
+        width: 70%;
+    }
+
+    .header__title{
+        font-size: 2rem !important;
+    }
+}
+
+@media (min-width: 414px) and (max-width: 575.98px) and (orientation: portrait) {
+    .header__form--btn--login,
+    .header__form--btn--signup,
+    .header__form--btn--signout,
+    .header__form--btn--favorites{
+        display: none;
+    }
+
+    .header__form{
+        height: 32px;
+        width: 60%;
+    }
+
+    .header__form:focus-within{
+        width: 70%;
+    }
+
+    .header__title{
+        font-size: 2rem !important;
+    }
+}
+
+@media (max-width: 575.98px) and (orientation: landscape) {
+    .header{
+        height: 12vh;
+        padding: 4px 8px;
+    }
+
+    .header__title{
+        font-size: 1.6rem !important;
+    }
+
+    .header__form--btn--login,
+    .header__form--btn--signup,
+    .header__form--btn--signout,
+    .header__form--btn--favorites{
+        font-size: 1rem !important;
+    }
+
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .header{
+        height: 12vh;
+    }
+
+    .header__title{
+        font-size: 1.6rem !important;
+    }
+
+    .header__form--btn--login,
+    .header__form--btn--signup,
+    .header__form--btn--signout,
+    .header__form--btn--favorites{
+        font-size: 1.2rem !important;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .header{
+        height: 12vh;
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+
+}

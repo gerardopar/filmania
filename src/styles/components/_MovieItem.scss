@@ -51,6 +51,29 @@
     -webkit-filter: brightness(115%);
 }
 
+// * media queries
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 374.98px) and (orientation: portrait) {
+    .movieItem__poster{
+        width: 125px;
+        height: 200px;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 413.98px) and (orientation: portrait) {
+    .movieItem__poster{
+        width: 150px;
+        height: 225px;
+    }
+}
+
+@media (min-width: 414px) and (max-width: 575.98px) and (orientation: portrait) {
+    .movieItem__poster{
+        width: 150px;
+        height: 225px;
+    }
+}
+
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
     .movieItem__wrap{

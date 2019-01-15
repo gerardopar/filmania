@@ -1,13 +1,14 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
+import RouteContext from '../context/route-context';
 // * importing components
 import Header from './Header';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 import Spinner from './Spinner';
 import Navigation from './Navigation';
+import MobileNavigation from './MovileNavigation';
 import MovieList from './MovieList';
 
 class HorrorPage extends Component {
@@ -171,6 +172,29 @@ class HorrorPage extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
+
+                    <RouteContext.Consumer>
+                    {routeContext => {
+                    return (
+                    <React.Fragment>
+                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
+                        <ReactCSSTransitionGroup
+                            transitionName="trans"
+                            transitionEnterTimeout={500}
+                            transitionLeaveTimeout={500}>
+                            {
+                                routeContext.showMobileNav 
+                                    ? <MobileNavigation 
+                                        handleSignupModal={this.handleSignupModal}
+                                        handleMobileNav={routeContext.handleMobileNav}/> 
+                                        : null
+                            }
+                        </ReactCSSTransitionGroup>
+                    </React.Fragment>
+                                        )}
+                    }
+                    </RouteContext.Consumer>
+
                         {
                             this.state.movies.length === 0 
                                 ? <Spinner />

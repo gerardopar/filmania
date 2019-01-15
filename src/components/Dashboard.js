@@ -7,7 +7,9 @@ import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 import Spinner from './Spinner';
 import Navigation from './Navigation';
+import MobileNavigation from './MovileNavigation';
 import MovieList from './MovieList';
+import RouteContext from '../context/route-context';
 
 class Dashboard extends Component {
     constructor(props){
@@ -17,7 +19,7 @@ class Dashboard extends Component {
             movies: [],
             filteredMovies: [],
             page: 1,
-            showSignupModal: false
+            showSignupModal: false,
         };
 
         this.handleMovies = this.handleMovies.bind(this);
@@ -172,6 +174,28 @@ class Dashboard extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
+                    
+                    <RouteContext.Consumer>
+                    {routeContext => {
+                    return (
+                    <React.Fragment>
+                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
+                        <ReactCSSTransitionGroup
+                            transitionName="trans"
+                            transitionEnterTimeout={500}
+                            transitionLeaveTimeout={500}>
+                            {
+                                routeContext.showMobileNav 
+                                    ? <MobileNavigation 
+                                        handleSignupModal={this.handleSignupModal}
+                                        handleMobileNav={routeContext.handleMobileNav}/> 
+                                        : null
+                            }
+                        </ReactCSSTransitionGroup>
+                    </React.Fragment>
+                                        )}
+                    }
+                    </RouteContext.Consumer>
                         {
                             this.state.movies.length === 0 
                                 ? <Spinner />
