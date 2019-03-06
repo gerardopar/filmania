@@ -58,15 +58,21 @@ button:disabled{
 // * media queries
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 374.98px) and (orientation: portrait) {
-
+    body{
+        margin: 15px;
+    }
 }
 
 @media (min-width: 375px) and (max-width: 413.98px) and (orientation: portrait) {
-
+    body{
+        margin: 15px;
+    }
 }
 
 @media (min-width: 414px) and (max-width: 575.98px) and (orientation: portrait) {
-
+    body{
+        margin: 15px;
+    }
 }
 
 @media (max-width: 575.98px) and (orientation: landscape) {

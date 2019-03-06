@@ -1,18 +1,18 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import RouteContext from '../context/route-context';
 
 // * importing components
-import Header from './Header';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
-import Spinner from './Spinner';
-import Navigation from './Navigation';
-import MobileNavigation from './MovileNavigation';
-import MovieList from './MovieList';
+import Header from '../header/Header';
+import LoginModal from '../modals/LoginModal';
+import SignupModal from '../modals/SignupModal';
+import Spinner from '../spinner/Spinner';
+import MobileNavigation from '../nav/MovileNavigation';
+import Navigation from '../nav/Navigation';
+import MovieList from '../MovieList';
+import RouteContext from '../../context/route-context';
 
-class DocumentaryPage extends Component {
+class AnimationPage extends Component {
     constructor(props){
         super(props);
 
@@ -109,7 +109,7 @@ class DocumentaryPage extends Component {
     handleMovies(e, pageNumber){
         let page = pageNumber;
 
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/documentary?page=${page}`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/animation?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -164,7 +164,7 @@ class DocumentaryPage extends Component {
                 }
             </ReactCSSTransitionGroup>
                 <Header 
-                    handleSignupModal={this.handleSignupModal} 
+                    handleSignupModal={this.handleSignupModal}
                     handleMovieSearchSubmit={this.handleMovieSearchSubmit}
                     handleMovieSearch={this.handleMovieSearch}
                     handleHomePage={this.handleHomePage}/>
@@ -212,4 +212,4 @@ class DocumentaryPage extends Component {
     }
 }
 
-export default DocumentaryPage;
+export default AnimationPage;

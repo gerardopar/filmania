@@ -1,18 +1,17 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import RouteContext from '../context/route-context';
 // * importing components
-import Header from './Header';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
-import Spinner from './Spinner';
-import Navigation from './Navigation';
-import MobileNavigation from './MovileNavigation';
-import MovieList from './MovieList';
+import Header from '../header/Header';
+import LoginModal from '../modals/LoginModal';
+import SignupModal from '../modals/SignupModal';
+import Spinner from '../spinner/Spinner';
+import Navigation from '../nav/Navigation';
+import MobileNavigation from '../nav/MovileNavigation';
+import MovieList from '../MovieList';
+import RouteContext from '../../context/route-context';
 
-
-class ComedyPage extends Component {
+class Dashboard extends Component {
     constructor(props){
         super(props);
 
@@ -20,7 +19,7 @@ class ComedyPage extends Component {
             movies: [],
             filteredMovies: [],
             page: 1,
-            showSignupModal: false
+            showSignupModal: false,
         };
 
         this.handleMovies = this.handleMovies.bind(this);
@@ -62,6 +61,7 @@ class ComedyPage extends Component {
             return res.json();
         })
         .then(result => {
+            console.log(result);
             this.setState({ showSignupModal: false });
         })
         .catch((err) => console.log(err));
@@ -108,7 +108,7 @@ class ComedyPage extends Component {
     handleMovies(e, pageNumber){
         let page = pageNumber;
 
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/comedy?page=${page}`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/popular?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -166,13 +166,14 @@ class ComedyPage extends Component {
                     handleSignupModal={this.handleSignupModal} 
                     handleMovieSearchSubmit={this.handleMovieSearchSubmit}
                     handleMovieSearch={this.handleMovieSearch}
-                    handleHomePage={this.handleHomePage}/>
+                    handleHomePage={this.handleHomePage}
+                    />
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
-
+                    
                     <RouteContext.Consumer>
                     {routeContext => {
                     return (
@@ -194,7 +195,6 @@ class ComedyPage extends Component {
                                         )}
                     }
                     </RouteContext.Consumer>
-
                         {
                             this.state.movies.length === 0 
                                 ? <Spinner />
@@ -211,4 +211,4 @@ class ComedyPage extends Component {
     }
 }
 
-export default ComedyPage;
+export default Dashboard;

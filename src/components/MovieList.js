@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MovieItem from './MovieItem';
-import Pagination from './Pagination';
+import Pagination from './nav/Pagination';
 
 const MovieList = (props) => (
     <div className="movieList__wrap z-depth-5">

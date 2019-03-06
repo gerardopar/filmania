@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import RouteContext from '../context/route-context';
-import Footer from './Footer';
+import RouteContext from '../../context/route-context';
+import Footer from '../footer/Footer';
 
 
 const MobileNavigation = (props) => (

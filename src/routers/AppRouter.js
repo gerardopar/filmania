@@ -5,18 +5,18 @@ import { BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import RouteContext from '../context/route-context'; // react context
 
 // * importing components
-import Dashboard from '../components/Dashboard';
-import AdventurePage from '../components/AdventurePage';
-import AnimationPage from '../components/AnimationPage';
-import ComedyPage from '../components/ComedyPage';
-import DocumentaryPage from '../components/DocumentaryPage';
-import DramaPage from '../components/DramaPage';
-import FantasyPage from '../components/FantasyPage';
-import HorrorPage from '../components/HorrorPage';
-import ScienceFictionPage from '../components/ScienceFictionPage';
-import ThrillerPage from '../components/ThrillerPage';
-import Movie from '../components/Movie';
-import FavoritesPage from '../components/FavoritesPage';
+import Dashboard from '../components/pages/Dashboard';
+import AdventurePage from '../components/pages/AdventurePage';
+import AnimationPage from '../components/pages/AnimationPage';
+import ComedyPage from '../components/pages/ComedyPage';
+import DocumentaryPage from '../components/pages/DocumentaryPage';
+import DramaPage from '../components/pages/DramaPage';
+import FantasyPage from '../components/pages/FantasyPage';
+import HorrorPage from '../components/pages/HorrorPage';
+import ScienceFictionPage from '../components/pages/ScienceFictionPage';
+import ThrillerPage from '../components/pages/ThrillerPage';
+import Movie from '../components/pages/Movie';
+import FavoritesPage from '../components/pages/FavoritesPage';
 
 //AppRouter component
 class AppRouter extends Component {

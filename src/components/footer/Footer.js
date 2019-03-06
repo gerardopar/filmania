@@ -1,5 +1,5 @@
 import React from 'react';
-import tmdb_logo from '../assets/img/the-movie-db.png';
+import tmdb_logo from '../../assets/img/the-movie-db.png';
 
 const Footer = (props) => (
     <footer className="footer">

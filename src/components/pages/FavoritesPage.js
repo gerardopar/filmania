@@ -2,16 +2,14 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // * importing components
-import Header from './Header';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
-import Spinner from './Spinner';
-import Navigation from './Navigation';
-import MobileNavigation from './MovileNavigation';
-import MovieList from './MovieList';
-import RouteContext from '../context/route-context';
+import Header from '../header/Header';
+import LoginModal from '../modals/LoginModal';
+import SignupModal from '../modals/SignupModal';
+import Spinner from '../spinner/Spinner';
+import Navigation from '../nav/Navigation';
+import FavMovieItem from '../FavMovieItem';
 
-class Dashboard extends Component {
+class FavoritesPage extends Component {
     constructor(props){
         super(props);
 
@@ -19,10 +17,12 @@ class Dashboard extends Component {
             movies: [],
             filteredMovies: [],
             page: 1,
-            showSignupModal: false,
+            showSignupModal: false
         };
 
-        this.handleMovies = this.handleMovies.bind(this);
+        this.handleFavMovies = this.handleFavMovies.bind(this);
+        this.handleDeleteMovie = this.handleDeleteMovie.bind(this);
+
         this.handleMovieSearch = this.handleMovieSearch.bind(this);
         this.handleMovieSearchSubmit = this.handleMovieSearchSubmit.bind(this);
         this.handleSignupModal = this.handleSignupModal.bind(this);
@@ -31,7 +31,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount(){
-        this.handleMovies();
+        this.props.token ? this.handleFavMovies() : null;
     }
 
     // method: handles user signup
@@ -61,7 +61,6 @@ class Dashboard extends Component {
             return res.json();
         })
         .then(result => {
-            console.log(result);
             this.setState({ showSignupModal: false });
         })
         .catch((err) => console.log(err));
@@ -84,7 +83,7 @@ class Dashboard extends Component {
         e.preventDefault();
         let movie_title = e.target.elements.title.value;
         if(movie_title === '' || movie_title.length === 0 || movie_title === null || movie_title === undefined) {
-            console.log('no movie searched');
+            console.log('Movie does not exist!');
         } else {
 
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movie_title}&page=1&include_adult=false`, {
@@ -105,12 +104,10 @@ class Dashboard extends Component {
         }
     }
 
-    handleMovies(e, pageNumber){
-        let page = pageNumber;
-
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/popular?page=${page}`, {
-            method: 'GET',
+    handleFavMovies(){
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/favorites`, {
             headers: {
+                Authorization: 'Bearer ' + this.props.token, // required to authenticate the user
                 'Content-Type': 'application/json'
             }
         })
@@ -133,6 +130,39 @@ class Dashboard extends Component {
 
     handleHomePage(){
         this.props.history.push('/');
+    }
+
+    handleDeleteMovie(e, id){
+        e.preventDefault();
+
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/deleteFav`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: 'Bearer ' + this.props.token, // required to authenticate the user
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id: id
+        })
+        })
+        .then(res => {
+            if (res.status === 422) {
+            throw new Error('Validation failed.');
+            }
+            if (res.status !== 200 && res.status !== 201) {
+            throw new Error('Could not authenticate you!');
+            }
+            return res.json();
+        })
+        .then((result) => {
+            
+            this.setState((prevState) => ({
+                movies: prevState.movies.filter((movie) => movie._id !== id)
+            }))
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     render(){
@@ -173,37 +203,18 @@ class Dashboard extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
-                    
-                    <RouteContext.Consumer>
-                    {routeContext => {
-                    return (
-                    <React.Fragment>
-                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
-                        <ReactCSSTransitionGroup
-                            transitionName="trans"
-                            transitionEnterTimeout={500}
-                            transitionLeaveTimeout={500}>
-                            {
-                                routeContext.showMobileNav 
-                                    ? <MobileNavigation 
-                                        handleSignupModal={this.handleSignupModal}
-                                        handleMobileNav={routeContext.handleMobileNav}/> 
-                                        : null
-                            }
-                        </ReactCSSTransitionGroup>
-                    </React.Fragment>
-                                        )}
-                    }
-                    </RouteContext.Consumer>
+                        <div className="movieList__wrap z-depth-5">
                         {
                             this.state.movies.length === 0 
                                 ? <Spinner />
-                                : <MovieList 
-                                filteredMovies={this.state.filteredMovies}
-                                movies={this.state.movies}
-                                handleMovies={this.handleMovies}
-                                />
+                                : this.state.movies.map((moviesList, index) => (
+                                    <FavMovieItem 
+                                    handleDeleteMovie={this.handleDeleteMovie}
+                                    {...moviesList}
+                                    key={index}
+                                    /> ))
                         }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -211,4 +222,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default FavoritesPage;

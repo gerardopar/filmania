@@ -1,18 +1,18 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import RouteContext from '../../context/route-context';
 
 // * importing components
-import Header from './Header';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
-import Spinner from './Spinner';
-import MobileNavigation from './MovileNavigation';
-import Navigation from './Navigation';
-import MovieList from './MovieList';
-import RouteContext from '../context/route-context';
+import Header from '../header/Header';
+import LoginModal from '../modals/LoginModal';
+import SignupModal from '../modals/SignupModal';
+import Spinner from '../spinner/Spinner';
+import Navigation from '../nav/Navigation';
+import MobileNavigation from '../nav/MovileNavigation';
+import MovieList from '../MovieList';
 
-class AdventurePage extends Component {
+class DocumentaryPage extends Component {
     constructor(props){
         super(props);
 
@@ -20,12 +20,13 @@ class AdventurePage extends Component {
             movies: [],
             filteredMovies: [],
             page: 1,
-            showSignupModal: false,
+            showSignupModal: false
         };
 
         this.handleMovies = this.handleMovies.bind(this);
         this.handleMovieSearch = this.handleMovieSearch.bind(this);
         this.handleMovieSearchSubmit = this.handleMovieSearchSubmit.bind(this);
+
         this.handleSignupModal = this.handleSignupModal.bind(this);
         this.handleSignup = this.handleSignup.bind(this);
         this.handleHomePage = this.handleHomePage.bind(this);
@@ -108,7 +109,7 @@ class AdventurePage extends Component {
     handleMovies(e, pageNumber){
         let page = pageNumber;
 
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/adventure?page=${page}`, {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/documentary?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -150,7 +151,6 @@ class AdventurePage extends Component {
                         : null
                 }
             </ReactCSSTransitionGroup>
-
             <ReactCSSTransitionGroup
                 transitionName="trans"
                 transitionEnterTimeout={500}
@@ -163,40 +163,38 @@ class AdventurePage extends Component {
                         : null
                 }
             </ReactCSSTransitionGroup>
-
                 <Header 
-                    handleSignupModal={this.handleSignupModal}
+                    handleSignupModal={this.handleSignupModal} 
                     handleMovieSearchSubmit={this.handleMovieSearchSubmit}
                     handleMovieSearch={this.handleMovieSearch}
                     handleHomePage={this.handleHomePage}/>
-
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
 
-                        <RouteContext.Consumer>
-                        {routeContext => {
-                        return (
-                        <React.Fragment>
-                        <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
-                            <ReactCSSTransitionGroup
-                                transitionName="trans"
-                                transitionEnterTimeout={500}
-                                transitionLeaveTimeout={500}>
-                                {
-                                    routeContext.showMobileNav 
-                                        ? <MobileNavigation 
-                                            handleSignupModal={this.handleSignupModal}
-                                            handleMobileNav={routeContext.handleMobileNav}/> 
-                                            : null
-                                }
-                            </ReactCSSTransitionGroup>
-                        </React.Fragment>
-                                            )}
-                        }
-                        </RouteContext.Consumer>
+                    <RouteContext.Consumer>
+                    {routeContext => {
+                    return (
+                    <React.Fragment>
+                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
+                        <ReactCSSTransitionGroup
+                            transitionName="trans"
+                            transitionEnterTimeout={500}
+                            transitionLeaveTimeout={500}>
+                            {
+                                routeContext.showMobileNav 
+                                    ? <MobileNavigation 
+                                        handleSignupModal={this.handleSignupModal}
+                                        handleMobileNav={routeContext.handleMobileNav}/> 
+                                        : null
+                            }
+                        </ReactCSSTransitionGroup>
+                    </React.Fragment>
+                                        )}
+                    }
+                    </RouteContext.Consumer>
 
                         {
                             this.state.movies.length === 0 
@@ -207,7 +205,6 @@ class AdventurePage extends Component {
                                 handleMovies={this.handleMovies}
                                 />
                         }
-
                     </div>
                 </div>
             </div>
@@ -215,4 +212,4 @@ class AdventurePage extends Component {
     }
 }
 
-export default AdventurePage;
+export default DocumentaryPage;

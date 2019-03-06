@@ -1,5 +1,5 @@
 import React from 'react';
-import RouteContext from '../context/route-context';
+import RouteContext from '../../context/route-context';
 
 const LoginModal = (props) => (
     <div className="modal__wrap">

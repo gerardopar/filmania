@@ -1,15 +1,15 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import RouteContext from '../context/route-context';
+import RouteContext from '../../context/route-context';
 // * importing components
-import Header from './Header';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
-import Spinner from './Spinner';
-import Navigation from './Navigation';
-import MobileNavigation from './MovileNavigation';
-import MovieList from './MovieList';
+import Header from '../header/Header';
+import LoginModal from '../modals/LoginModal';
+import SignupModal from '../modals/SignupModal';
+import Spinner from '../spinner/Spinner';
+import Navigation from '../nav/Navigation';
+import MobileNavigation from '../nav/MovileNavigation';
+import MovieList from '../MovieList';
 
 class FantasyPage extends Component {
     constructor(props){

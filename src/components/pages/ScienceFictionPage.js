@@ -1,15 +1,17 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import RouteContext from '../../context/route-context';
 // * importing components
-import Header from './Header';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
-import Spinner from './Spinner';
-import Navigation from './Navigation';
-import FavMovieItem from './FavMovieItem';
+import Header from '../header/Header';
+import LoginModal from '../modals/LoginModal';
+import SignupModal from '../modals/SignupModal';
+import Spinner from '../spinner/Spinner';
+import Navigation from '../nav/Navigation';
+import MobileNavigation from '../nav/MovileNavigation';
+import MovieList from '../MovieList';
 
-class FavoritesPage extends Component {
+class ScienceFictionPage extends Component {
     constructor(props){
         super(props);
 
@@ -20,18 +22,17 @@ class FavoritesPage extends Component {
             showSignupModal: false
         };
 
-        this.handleFavMovies = this.handleFavMovies.bind(this);
-        this.handleDeleteMovie = this.handleDeleteMovie.bind(this);
-
+        this.handleMovies = this.handleMovies.bind(this);
         this.handleMovieSearch = this.handleMovieSearch.bind(this);
         this.handleMovieSearchSubmit = this.handleMovieSearchSubmit.bind(this);
+
         this.handleSignupModal = this.handleSignupModal.bind(this);
         this.handleSignup = this.handleSignup.bind(this);
         this.handleHomePage = this.handleHomePage.bind(this);
     }
 
     componentDidMount(){
-        this.props.token ? this.handleFavMovies() : null;
+        this.handleMovies();
     }
 
     // method: handles user signup
@@ -83,7 +84,7 @@ class FavoritesPage extends Component {
         e.preventDefault();
         let movie_title = e.target.elements.title.value;
         if(movie_title === '' || movie_title.length === 0 || movie_title === null || movie_title === undefined) {
-            console.log('Movie does not exist!');
+            console.log('no movie searched');
         } else {
 
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movie_title}&page=1&include_adult=false`, {
@@ -104,10 +105,12 @@ class FavoritesPage extends Component {
         }
     }
 
-    handleFavMovies(){
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/favorites`, {
+    handleMovies(e, pageNumber){
+        let page = pageNumber;
+
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/scienceFiction?page=${page}`, {
+            method: 'GET',
             headers: {
-                Authorization: 'Bearer ' + this.props.token, // required to authenticate the user
                 'Content-Type': 'application/json'
             }
         })
@@ -130,39 +133,6 @@ class FavoritesPage extends Component {
 
     handleHomePage(){
         this.props.history.push('/');
-    }
-
-    handleDeleteMovie(e, id){
-        e.preventDefault();
-
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/deleteFav`, {
-        method: 'DELETE',
-        headers: {
-            Authorization: 'Bearer ' + this.props.token, // required to authenticate the user
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: id
-        })
-        })
-        .then(res => {
-            if (res.status === 422) {
-            throw new Error('Validation failed.');
-            }
-            if (res.status !== 200 && res.status !== 201) {
-            throw new Error('Could not authenticate you!');
-            }
-            return res.json();
-        })
-        .then((result) => {
-            
-            this.setState((prevState) => ({
-                movies: prevState.movies.filter((movie) => movie._id !== id)
-            }))
-        })
-        .catch(err => {
-            console.log(err);
-        });
     }
 
     render(){
@@ -196,25 +166,44 @@ class FavoritesPage extends Component {
                     handleSignupModal={this.handleSignupModal} 
                     handleMovieSearchSubmit={this.handleMovieSearchSubmit}
                     handleMovieSearch={this.handleMovieSearch}
-                    handleHomePage={this.handleHomePage}
-                    />
+                    handleHomePage={this.handleHomePage}/>
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
-                        <div className="movieList__wrap z-depth-5">
+
+                    <RouteContext.Consumer>
+                    {routeContext => {
+                    return (
+                    <React.Fragment>
+                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
+                        <ReactCSSTransitionGroup
+                            transitionName="trans"
+                            transitionEnterTimeout={500}
+                            transitionLeaveTimeout={500}>
+                            {
+                                routeContext.showMobileNav 
+                                    ? <MobileNavigation 
+                                        handleSignupModal={this.handleSignupModal}
+                                        handleMobileNav={routeContext.handleMobileNav}/> 
+                                        : null
+                            }
+                        </ReactCSSTransitionGroup>
+                    </React.Fragment>
+                                        )}
+                    }
+                    </RouteContext.Consumer>
+
                         {
                             this.state.movies.length === 0 
                                 ? <Spinner />
-                                : this.state.movies.map((moviesList, index) => (
-                                    <FavMovieItem 
-                                    handleDeleteMovie={this.handleDeleteMovie}
-                                    {...moviesList}
-                                    key={index}
-                                    /> ))
+                                : <MovieList 
+                                filteredMovies={this.state.filteredMovies}
+                                movies={this.state.movies}
+                                handleMovies={this.handleMovies}
+                                />
                         }
-                        </div>
                     </div>
                 </div>
             </div>
@@ -222,4 +211,4 @@ class FavoritesPage extends Component {
     }
 }
 
-export default FavoritesPage;
+export default ScienceFictionPage;

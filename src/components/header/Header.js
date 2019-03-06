@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import RouteContext from '../context/route-context';
+import RouteContext from '../../context/route-context';
 
 const Header = (props) => (
     <div>
