@@ -17,6 +17,7 @@ import ScienceFictionPage from '../components/pages/ScienceFictionPage';
 import ThrillerPage from '../components/pages/ThrillerPage';
 import Movie from '../components/pages/Movie';
 import FavoritesPage from '../components/pages/FavoritesPage';
+import _404page from '../components/pages/404page';
 
 //AppRouter component
 class AppRouter extends Component {
@@ -229,6 +230,12 @@ class AppRouter extends Component {
                         <FavoritesPage
                         showLoginModal={this.state.showLoginModal}
                         token={this.state.token}
+                        {...props}
+                        />
+                )}/>
+                <Route
+                    render={props => (
+                        <_404page
                         {...props}
                         />
                 )}/>

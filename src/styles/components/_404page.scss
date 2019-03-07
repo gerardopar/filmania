@@ -1,0 +1,112 @@
+.errorPage{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90vh;
+    width: 100%;
+}
+
+.errorPage__col--one{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.errorPage__num{
+    font-size: 40rem;
+    color: $off-white;
+}
+
+.errorPage__text{
+    color: $off-white;
+    font-weight: 100;
+    margin: 0;
+    padding: 0;
+}
+
+.errorPage__btn{
+    background-color: transparent !important;
+    color: $off-white !important;
+    border: none;
+    padding: 12px 16px;
+    margin-top: 25px;
+}
+
+.errorPage__btn{
+    border: solid 1px rgb(104, 135, 172) !important;
+}
+.errorPage__btn:hover{
+    background-color: rgb(104, 135, 172) !important;
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 374.98px) and (orientation: portrait) {
+    .errorPage__num{
+        font-size: 15rem;
+    }
+    
+    .errorPage__img{
+        height: 180px;
+        width: 127px;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 413.98px) and (orientation: portrait) {
+    .errorPage__num{
+        font-size: 20rem;
+    }
+    
+    .errorPage__img{
+        height: 200px;
+        width: 147px;
+    }
+}
+
+@media (min-width: 414px) and (max-width: 575.98px) and (orientation: portrait) {
+    .errorPage__num{
+        font-size: 20rem;
+    }
+    
+    .errorPage__img{
+        height: 200px;
+        width: 147px;
+    }
+}
+
+@media (max-width: 575.98px) and (orientation: landscape) {
+    .errorPage__num{
+        font-size: 30rem;
+    }
+    
+    .errorPage__img{
+        height: 280px;
+        width: 227px;
+    }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .errorPage__num{
+        font-size: 30rem;
+    }
+    
+    .errorPage__img{
+        height: 280px;
+        width: 227px;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .errorPage__num{
+        font-size: 30rem;
+    }
+    
+    .errorPage__img{
+        height: 280px;
+        width: 227px;
+    }
+}
+
