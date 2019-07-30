@@ -21,6 +21,7 @@ const LoginModal = (props) => (
                             <i className="material-icons modal__input--icon">lock</i> &nbsp; PASSWORD
                         </label>
                         <input className="modal__input" type="password" name="password" autoComplete="off"/>
+                        { routeContext.loginError !== null ? <div className="errors__login"><p>{routeContext.loginError}</p></div> : null }
                     </div>
                     <div className="modal__btn--wrap">
                         <button className="modal__btn--login waves-effect waves-light" type="submit">LOG IN</button>

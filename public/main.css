@@ -1008,6 +1008,14 @@ button:disabled {
   .footer__text {
     font-size: 1.4rem; } }
 
+.errors__login {
+  color: #ff5252;
+  text-align: center; }
+
+.errors__signup {
+  color: #ff5252;
+  text-align: center; }
+
 .errorPage {
   align-items: center;
   display: flex;

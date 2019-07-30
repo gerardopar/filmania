@@ -27,10 +27,14 @@ class Movie extends Component {
             movie_rating: '',
             related_movies: [],
             hidden: true,
-            showSignupModal: false
+            showSignupModal: false,
+            Errors: {
+                signup: null
+            }
         };
 
         this.handleSignupModal = this.handleSignupModal.bind(this);
+        this.handleSignup = this.handleSignup.bind(this);
         this.handleGetMovieDetails = this.handleGetMovieDetails.bind(this);
         this.handleSimiliarMovies = this.handleSimiliarMovies.bind(this);
         this.handleRedirectHome = this.handleRedirectHome.bind(this);
@@ -41,6 +45,41 @@ class Movie extends Component {
     componentDidMount(){
         this.handleGetMovieDetails();
         this.handleSimiliarMovies();
+    }
+
+    // method: handles user signup
+    handleSignup(e){
+        e.preventDefault();
+        fetch(`https://filmania-rest-api.herokuapp.com/signup`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: e.target.elements.email.value,
+            password: e.target.elements.password.value,
+            movies: []
+        })
+        })
+        .then(res => {
+            if (res.status === 422) {
+            throw new Error(
+                "Validation failed. Email already in use!"
+            );
+            }
+            if (res.status !== 200 && res.status !== 201) {
+            console.log('Error!');
+            throw new Error('Creating a user failed!');
+            }
+            return res.json();
+        })
+        .then(result => {
+            this.setState({ showSignupModal: false });
+        })
+        .catch((err) => {
+            console.log(err);
+            this.setState({ Errors: { signup: err.message } });
+        });
     }
 
     handleGetMovieDetails(){
@@ -190,6 +229,7 @@ class Movie extends Component {
                     {
                         this.state.showSignupModal 
                             ? <SignupModal 
+                                signupError={this.state.Errors.signup}
                                 handleSignup={this.handleSignup}
                                 handleSignupModal={this.handleSignupModal}/> 
                             : null

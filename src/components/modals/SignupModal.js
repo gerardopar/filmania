@@ -17,6 +17,7 @@ const SignupModal = (props) => (
                     <i className="material-icons modal__input--icon">lock</i> &nbsp; PASSWORD
                 </label>
                 <input className="modal__input" type="password" name="password" autoComplete="off"/>
+                { props.signupError !== null ? <div className="errors__signup"><p>{props.signupError}</p></div> : null }
             </div>
             <div className="modal__btn--wrap">
                 <button className="modal__btn--login waves-effect waves-light" type="submit">SIGN UP</button>

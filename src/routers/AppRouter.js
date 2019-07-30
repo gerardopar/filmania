@@ -28,7 +28,10 @@ class AppRouter extends Component {
             token: null,
             showLoginModal: false,
             showMobileNav: false,
-            collapse: false
+            collapse: false,
+            Errors: {
+                login: ''
+            }
         }
 
         this.handleLogin = this.handleLogin.bind(this);
@@ -75,11 +78,13 @@ class AppRouter extends Component {
         })
         .then(res => {
             if (res.status === 422) {
-            throw new Error('Validation failed.');
+                throw new Error('Validation failed.');
+            }
+            if (res.status === 401) {
+                throw new Error('Email or Password is Incorrect');
             }
             if (res.status !== 200 && res.status !== 201) {
-            console.log('Error!');
-            throw new Error('Could not authenticate you!');
+                throw new Error('Could not authenticate you!'); // this error is thrown in the catch block
             }
             return res.json();
         })
@@ -101,6 +106,9 @@ class AppRouter extends Component {
         })
         .catch(err => {
             console.log(err);
+            this.setState({ Errors: {
+                login: err.message
+            }});
         });
     };
 
@@ -248,6 +256,7 @@ class AppRouter extends Component {
             <div>
             <RouteContext.Provider
                 value={{ 
+                        loginError: this.state.Errors.login,
                         handleLogin: this.handleLogin,
                         handleLoginModal: this.handleLoginModal,
                         handleLogout: this.handleLogout,

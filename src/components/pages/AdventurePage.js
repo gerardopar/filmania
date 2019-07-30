@@ -21,6 +21,9 @@ class AdventurePage extends Component {
             filteredMovies: [],
             page: 1,
             showSignupModal: false,
+            Errors: {
+                signup: null
+            }
         };
 
         this.handleMovies = this.handleMovies.bind(this);
@@ -52,7 +55,7 @@ class AdventurePage extends Component {
         .then(res => {
             if (res.status === 422) {
             throw new Error(
-                "Validation failed. Make sure the email address isn't used yet!"
+                "Validation failed. Email already in use!"
             );
             }
             if (res.status !== 200 && res.status !== 201) {
@@ -64,7 +67,10 @@ class AdventurePage extends Component {
         .then(result => {
             this.setState({ showSignupModal: false });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            console.log(err);
+            this.setState({ Errors: { signup: err.message } });
+        });
     }
 
     handleMovieSearch(e){
@@ -158,6 +164,7 @@ class AdventurePage extends Component {
                 {
                     this.state.showSignupModal 
                         ? <SignupModal 
+                            signupError={this.state.Errors.signup}
                             handleSignup={this.handleSignup}
                             handleSignupModal={this.handleSignupModal}/> 
                         : null
