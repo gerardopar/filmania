@@ -1,50 +1,61 @@
-const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// * importing modules 
+const path = require('path'); // * absolute path
+
+// * importing plugins
+const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // * generates a css file
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // * minifies css
+const TerserPlugin = require('terser-webpack-plugin'); // * minifies javascript
+
+// * webpack mode
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  
-    entry: ['babel-polyfill' , './src/index.js'],
+    entry: ['@babel/polyfill', './src/index.js'], // webpack entry point
     output: {
-        path: path.resolve(__dirname, 'public'),
-        filename: 'bundle.js'
+        filename: 'bundle.js', // webpack output file
+        path: path.resolve(__dirname, 'public') // webpack output point / directory
     },
-    module: {
-        rules: [{
-            test: /\.js$/,
-            exclude: /node_module/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    presets: ['env'],
-                    plugins: ['transform-object-rest-spread']
-                }
+    module: { // # loaders
+        rules: [
+            { // # js loader 
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: ['babel-loader', 'eslint-loader']
+            },
+            { // # styles loader
+                test: /\.scss$/, // tests for a sass file
+                use: [
+                    MiniCssExtractPlugin.loader, // compiles CSS into a seperate file
+                    { loader: 'css-loader' }, // translates CSS into CommonJS
+                    { loader: 'sass-loader' } // compiles Sass to CSS, using Node Sass by default
+                    ]
+            },
+            { // # file loader
+                test: /\.(png|svg|jpg|gif)$/, // tests for an img
+                use: [
+                    { loader: 'file-loader' }
+                ]
             }
-        },
-        {
-            test: /\.(png|jpg|jpeg|svg)$/,
-            loader: 'file-loader',
-            include: path.join(__dirname, 'src')
-        },
-        {
-          test: /\.s?[ac]ss$/,
-          use: [
-              MiniCssExtractPlugin.loader,
-              { loader: 'css-loader', options: { url: false, sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } }
-          ],
-      }
-        ]},
-        plugins: [
-          new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-          })
-        ],
-    devServer: {
-      contentBase: path.join(__dirname, 'public'),
-      historyApiFallback: true
+        ]
     },
-    devtool: 'source-map',
-    mode : devMode ? 'development' : 'production'
+    optimization: { // # optimization
+        minimizer: [
+            new OptimizeCssAssetsPlugin(), // minifies css
+            new TerserPlugin() // minifies javascript
+        ]
+    },
+    plugins: [ // # plugins
+        new MiniCssExtractPlugin({ // generates a css file
+            filename: '[name].css',
+            chunkFilename: '[id].css',
+        })
+    ],
+    // # development
+    devServer: { // webpack development server
+        contentBase: path.join(__dirname, 'public'),
+        historyApiFallback: true,
+        open: 'Google Chrome'
+    },
+    devtool: 'source-map', // source maps for debugging
+    mode: devMode ? 'development' : 'production' // webpack mode
 };
