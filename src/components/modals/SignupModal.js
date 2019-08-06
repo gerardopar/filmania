@@ -39,11 +39,15 @@ const signupModal = props => (
 );
 
 signupModal.propTypes = {
-    
+    signupError: PropTypes.string,
+    handleSignup: PropTypes.func,
+    handleSignupModal: PropTypes.func
 };
 
 signupModal.defaultProps = {
-
+    signupError: '',
+    handleSignup: () => {},
+    handleSignupModal: () => {}
 };
 
 export default signupModal;
