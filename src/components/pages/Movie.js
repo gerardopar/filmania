@@ -37,7 +37,6 @@ class Movie extends Component {
         this.handleSignup = this.handleSignup.bind(this);
         this.handleGetMovieDetails = this.handleGetMovieDetails.bind(this);
         this.handleSimiliarMovies = this.handleSimiliarMovies.bind(this);
-        this.handleRedirectHome = this.handleRedirectHome.bind(this);
         this.handleAddMovieToFav = this.handleAddMovieToFav.bind(this);
     }
 
@@ -154,10 +153,6 @@ class Movie extends Component {
         this.setState(() => ({
             showSignupModal: !this.state.showSignupModal
         }));
-    }
-
-    handleRedirectHome() {
-        this.props.history.push('/');
     }
 
     handleAddMovieToFav(e, id, poster, title, rating) {

@@ -1,7 +1,9 @@
 // * importing modules
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
-import { BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import {
+ BrowserRouter, Route, Switch, Redirect 
+} from 'react-router-dom';
 import RouteContext from '../context/route-context'; // react context
 
 // * importing components
@@ -17,22 +19,21 @@ import ScienceFictionPage from '../components/pages/ScienceFictionPage';
 import ThrillerPage from '../components/pages/ThrillerPage';
 import Movie from '../components/pages/Movie';
 import FavoritesPage from '../components/pages/FavoritesPage';
-import _404page from '../components/pages/404page';
+import PageNotFound from '../components/pages/404page';
 
-//AppRouter component
+// AppRouter component
 class AppRouter extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             isAuth: false,
             token: null,
             showLoginModal: false,
             showMobileNav: false,
-            collapse: false,
             Errors: {
                 login: ''
             }
-        }
+        };
 
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
@@ -45,28 +46,28 @@ class AppRouter extends Component {
     componentDidMount() {
         // checking if auth token is set
         const token = localStorage.getItem('token');
-        const expDate = localStorage.getItem('tokenExpires') 
+        const expDate = localStorage.getItem('tokenExpires'); 
         const date = Date.now(); // current date
         const currentDate = moment(date).format('MMMM Do YYYY, h:mm:ss a'); // current date format
 
-        if(token) {
-            this.setState({ isAuth: true, token: token });
+        if (token) {
+            this.setState({ isAuth: true, token });
         }
-        if(expDate < currentDate) {
+        if (expDate < currentDate) {
             this.handleAutoLogout();
         }
     }
 
-    handleLoginModal(){ 
-        this.setState(() => ({
-            showLoginModal: !this.state.showLoginModal
+    handleLoginModal() { 
+        this.setState(prevState => ({
+            showLoginModal: !prevState.showLoginModal
         }));
     }
 
     // method: authenticates user
-    handleLogin(e){
+    handleLogin(e) {
         e.preventDefault();
-        fetch(`https://filmania-rest-api.herokuapp.com/login`, {
+        fetch('https://filmania-rest-api.herokuapp.com/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -76,7 +77,7 @@ class AppRouter extends Component {
             password: e.target.elements.password.value
         })
         })
-        .then(res => {
+        .then((res) => {
             if (res.status === 422) {
                 throw new Error('Validation failed.');
             }
@@ -88,7 +89,7 @@ class AppRouter extends Component {
             }
             return res.json();
         })
-        .then(resData => {
+        .then((resData) => {
             this.setState(() => ({
                 isAuth: true,
                 token: resData.token,
@@ -104,16 +105,18 @@ class AppRouter extends Component {
             localStorage.setItem('token', resData.token);
             localStorage.setItem('userId', resData.userId);
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(err);
-            this.setState({ Errors: {
-                login: err.message
-            }});
+            this.setState({
+                Errors: {
+                    login: err.message
+                } 
+            });
         });
-    };
+    }
 
     // method: handles logout
-    handleLogout(e){
+    handleLogout(e) {
         e.preventDefault();
         this.setState(() => ({
             isAuth: false,
@@ -127,7 +130,7 @@ class AppRouter extends Component {
     }
 
     // method : handles Auto logout 
-    handleAutoLogout(){
+    handleAutoLogout() {
         this.setState(() => ({
             isAuth: false,
             token: null
@@ -139,114 +142,148 @@ class AppRouter extends Component {
         localStorage.removeItem('userId');
     }
 
-    handleMobileNav(){
-        this.setState(() => ({
-            showMobileNav: !this.state.showMobileNav
+    handleMobileNav() {
+        this.setState(prevState => ({
+            showMobileNav: !prevState.showMobileNav
         }));
     }
 
-    handleNavCollapse(){
-        this.setState(() => ({
-            showMobileNav: this.state.collapse
-        }));
+    handleNavCollapse() {
+        this.setState({ showMobileNav: false });
     }
 
-    render(){
-        let routes = (
+    render() {
+        const routes = (
             <Switch>
-                <Route path="/" exact={true}
-                    render={props => (
-                            <Dashboard
-
-                            showLoginModal={this.state.showLoginModal}
-                            {...props}
-                            />
-                )}/>
-                <Route path="/adventure" exact={true}
-                    render={props => (
-                        <AdventurePage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/animation" exact={true}
-                    render={props => (
-                        <AnimationPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/comedy" exact={true}
-                    render={props => (
-                        <ComedyPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/documentary" exact={true}
-                    render={props => (
-                        <DocumentaryPage 
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/drama" exact={true}
-                    render={props => (
-                        <DramaPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/fantasy" exact={true}
-                    render={props => (
-                        <FantasyPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/horror" exact={true}
-                    render={props => (
-                        <HorrorPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/scienceFiction" exact={true}
-                    render={props => (
-                        <ScienceFictionPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/thriller" exact={true}
-                    render={props => (
-                        <ThrillerPage
-                        showLoginModal={this.state.showLoginModal}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/movie/:id" exact={true}
-                    render={props => (
-                        <Movie
-                        showLoginModal={this.state.showLoginModal}
-                        token={this.state.token}
-                        {...props}
-                        />
-                )}/>
-                <Route path="/favorites" exact={true}
-                    render={props => (
-                        <FavoritesPage
-                        showLoginModal={this.state.showLoginModal}
-                        token={this.state.token}
-                        {...props}
-                        />
-                )}/>
                 <Route
-                    render={props => (
-                        <_404page
-                        {...props}
-                        />
-                )}/>
+                  path="/"
+                  exact
+                  render={props => (
+                    <Dashboard
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/adventure"
+                  exact
+                  render={props => (
+                    <AdventurePage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/animation"
+                  exact
+                  render={props => (
+                    <AnimationPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/comedy"
+                  exact
+                  render={props => (
+                    <ComedyPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/documentary"
+                  exact
+                  render={props => (
+                    <DocumentaryPage 
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/drama"
+                  exact
+                  render={props => (
+                    <DramaPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/fantasy"
+                  exact
+                  render={props => (
+                    <FantasyPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/horror"
+                  exact
+                  render={props => (
+                    <HorrorPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/scienceFiction"
+                  exact
+                  render={props => (
+                    <ScienceFictionPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/thriller"
+                  exact
+                  render={props => (
+                    <ThrillerPage
+                      showLoginModal={this.state.showLoginModal}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/movie/:id"
+                  exact
+                  render={props => (
+                    <Movie
+                      showLoginModal={this.state.showLoginModal}
+                      token={this.state.token}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  path="/favorites"
+                  exact
+                  render={props => (
+                    <FavoritesPage
+                      showLoginModal={this.state.showLoginModal}
+                      token={this.state.token}
+                      {...props}
+                    />
+                )} 
+                />
+                <Route
+                  render={props => (
+                    <PageNotFound
+                      {...props}
+                    />
+                )} 
+                />
                 <Redirect to="/" />
             </Switch>
             
@@ -255,7 +292,7 @@ class AppRouter extends Component {
             <BrowserRouter>
             <div>
             <RouteContext.Provider
-                value={{ 
+              value={{ 
                         loginError: this.state.Errors.login,
                         handleLogin: this.handleLogin,
                         handleLoginModal: this.handleLoginModal,
@@ -264,13 +301,14 @@ class AppRouter extends Component {
                         showMobileNav: this.state.showMobileNav,
                         handleMobileNav: this.handleMobileNav,
                         handleNavCollapse: this.handleNavCollapse
-                    }}>
+                    }}
+            >
                 {routes}
             </RouteContext.Provider>
             </div>
             </BrowserRouter>
         );
-    };
-};
+    }
+}
 
 export default AppRouter;

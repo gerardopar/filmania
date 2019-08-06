@@ -1,26 +1,41 @@
+// importing modules
 import React from 'react';
-
+import PropTypes from 'prop-types';
+// importing components
 import MovieItem from './MovieItem';
 import Pagination from './nav/Pagination';
 
-const MovieList = (props) => (
+const movieList = props => (
     <div className="movieList__wrap z-depth-5">
         {
-            props.filteredMovies.length > 0 ? props.filteredMovies.map((moviesList, index) => (
+            props.filteredMovies.length > 0 ? props.filteredMovies.map(movie => (
                 <MovieItem 
-                    {...moviesList}
-                    key={index}
-                    />
-            )) : props.movies.length > 0 ? props.movies.map((moviesList, index) => (
+                  {...movie}
+                  key={movie.id}
+                />
+            )) : props.movies.length > 0 ? props.movies.map(movie => (
                 <MovieItem 
-                    {...moviesList}
-                    key={index}
-                    />
+                  {...movie}
+                  key={movie.id}
+                />
             )) : null
         }
         <Pagination 
-            handleMovies={props.handleMovies}/>
+          handleMovies={props.handleMovies} 
+        />
     </div>
 );
 
-export default MovieList;
+movieList.propTypes = {
+    filteredMovies: PropTypes.arrayOf(PropTypes.object),
+    movies: PropTypes.arrayOf(PropTypes.object),
+    handleMovies: PropTypes.func
+};
+
+movieList.defaultProps = {
+    filteredMovies: [],
+    movies: [],
+    handleMovies: () => {}
+};
+
+export default movieList;
