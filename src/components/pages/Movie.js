@@ -11,7 +11,7 @@ import MovieDetails from '../MovieDetails';
 import Spinner from '../spinner/Spinner';
 
 class Movie extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -39,18 +39,17 @@ class Movie extends Component {
         this.handleSimiliarMovies = this.handleSimiliarMovies.bind(this);
         this.handleRedirectHome = this.handleRedirectHome.bind(this);
         this.handleAddMovieToFav = this.handleAddMovieToFav.bind(this);
-        this.handleHomePage = this.handleHomePage.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.handleGetMovieDetails();
         this.handleSimiliarMovies();
     }
 
     // method: handles user signup
-    handleSignup(e){
+    handleSignup(e) {
         e.preventDefault();
-        fetch(`https://filmania-rest-api.herokuapp.com/signup`, {
+        fetch('https://filmania-rest-api.herokuapp.com/signup', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -61,10 +60,10 @@ class Movie extends Component {
             movies: []
         })
         })
-        .then(res => {
+        .then((res) => {
             if (res.status === 422) {
             throw new Error(
-                "Validation failed. Email already in use!"
+                'Validation failed. Email already in use!'
             );
             }
             if (res.status !== 200 && res.status !== 201) {
@@ -73,7 +72,7 @@ class Movie extends Component {
             }
             return res.json();
         })
-        .then(result => {
+        .then((result) => {
             this.setState({ showSignupModal: false });
         })
         .catch((err) => {
@@ -82,8 +81,7 @@ class Movie extends Component {
         });
     }
 
-    handleGetMovieDetails(){
-
+    handleGetMovieDetails() {
         // get params id
         const movieId = this.props.match.params.id;
 
@@ -93,9 +91,7 @@ class Movie extends Component {
                 'Content-Type': 'application/json'
             }
         })
-        .then((data) => {
-            return data.json();
-        })
+        .then(data => data.json())
         .then((movie) => {
             this.setState(() => ({
                 movie_backdrop: `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
@@ -111,7 +107,7 @@ class Movie extends Component {
                 this.setState(() => ({
                     movie_genres: this.state.movie_genres.concat(` - ${movie.name}`)
                 }));
-            })
+            });
 
             fetch(`http://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=35d4df93498d535a82e07c079691b79c`, {
             method: 'GET',
@@ -119,26 +115,22 @@ class Movie extends Component {
                 'Content-Type': 'application/json'
             }
             })
-            .then((data) => {
-                return data.json();
-            })
+            .then(data => data.json())
             .then((trailer) => {
                 this.setState(() => ({
                     movie_trailer: `https://www.youtube.com/embed/${trailer.results[0].key}`
                 }));
             })
             .catch((err) => {
-                console.log(err)
-            })
-
+                console.log(err);
+            });
         })
         .catch((err) => {
             console.log(err);
-        })
+        });
     }
 
-    handleSimiliarMovies(){
-
+    handleSimiliarMovies() {
         const movieId = this.props.match.params.id;
 
         fetch(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&page=1`, {
@@ -147,31 +139,28 @@ class Movie extends Component {
                 'Content-Type': 'application/json'
             }
         })
-        .then((data) => {
-            return data.json();
-        })
+        .then(data => data.json())
         .then((movies) => {
-            
             this.setState(() => ({
                 related_movies: [...movies.results]
             }));
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
         });
     }
 
-    handleSignupModal(){
+    handleSignupModal() {
         this.setState(() => ({
             showSignupModal: !this.state.showSignupModal
         }));
     }
 
-    handleRedirectHome(){
+    handleRedirectHome() {
         this.props.history.push('/');
     }
 
-    handleAddMovieToFav(e, id, poster, title, rating){
+    handleAddMovieToFav(e, id, poster, title, rating) {
         e.preventDefault();
 
         const movieToAdd = {
@@ -179,70 +168,70 @@ class Movie extends Component {
             movie_poster: poster,
             movie_title: title,
             movie_rating: rating
-        }
+        };
 
         e.preventDefault();
-        fetch(`https://filmania-rest-api.herokuapp.com/movies/addToFav`, {
+        fetch('https://filmania-rest-api.herokuapp.com/movies/addToFav', {
             method: 'POST',
             headers: {
-                Authorization: 'Bearer ' + this.props.token, // required to authenticate the user
+                Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                movieToAdd: movieToAdd
+                movieToAdd
             })
         })
-        .then((data) => {
-            return data.json();
-        })
+        .then(data => data.json())
         .then((data) => {
             // console.log(data);
         })
         .catch((err) => {
             console.log(err);
-        })
+        });
     }
 
-    handleHomePage(){
-        this.props.history.push('/');
-    }
-
-    render(){
-
+    render() {
         return (
             <div>
                 <ReactCSSTransitionGroup
-                    transitionName="trans"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={500}>
+                  transitionName="trans"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={500}
+                >
                     {
                         this.props.showLoginModal 
-                            ? <LoginModal
-                                handleLoginModal={this.props.handleLoginModal}/> 
+                            ? (
+<LoginModal
+  handleLoginModal={this.props.handleLoginModal} 
+/>
+) 
                             : null
                     }
                 </ReactCSSTransitionGroup>
                 <ReactCSSTransitionGroup
-                    transitionName="trans"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={500}>
+                  transitionName="trans"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={500}
+                >
                     {
                         this.state.showSignupModal 
-                            ? <SignupModal 
-                                signupError={this.state.Errors.signup}
-                                handleSignup={this.handleSignup}
-                                handleSignupModal={this.handleSignupModal}/> 
+                            ? (
+<SignupModal 
+  signupError={this.state.Errors.signup}
+  handleSignup={this.handleSignup}
+  handleSignupModal={this.handleSignupModal} 
+/>
+) 
                             : null
                     }
                 </ReactCSSTransitionGroup>
                 <Header 
-                    isAuth={this.props.isAuth}
-                    hidden={this.state.hidden}
-                    handleLogout={this.props.handleLogout}
-                    handleLoginModal={this.props.handleLoginModal} 
-                    handleSignupModal={this.handleSignupModal} 
-                    handleHomePage={this.handleHomePage}
-                    />
+                  isAuth={this.props.isAuth}
+                  hidden={this.state.hidden}
+                  handleLogout={this.props.handleLogout}
+                  handleLoginModal={this.props.handleLoginModal} 
+                  handleSignupModal={this.handleSignupModal}
+                />
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
                         <Navigation />
@@ -251,17 +240,20 @@ class Movie extends Component {
                         {
                             this.state.movie_title.length === 0 
                                 ? <Spinner /> 
-                                : <MovieDetails 
-                                    handleAddMovieToFav={this.handleAddMovieToFav}
-                                    handleRedirectHome={this.handleRedirectHome}
-                                    hidden={this.state.hidden}
-                                    {...this.state}/>
+                                : (
+<MovieDetails 
+  handleAddMovieToFav={this.handleAddMovieToFav}
+  handleRedirectHome={this.handleRedirectHome}
+  hidden={this.state.hidden}
+  {...this.state} 
+/>
+)
                         }
                         
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 

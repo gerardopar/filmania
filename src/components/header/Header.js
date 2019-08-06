@@ -1,53 +1,93 @@
+// importing modules
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+// importing react context
 import RouteContext from '../../context/route-context';
 
-const Header = (props) => (
+const header = props => (
     <div>
     <RouteContext.Consumer>
-    {routeContext => {
-    return (
+    {routeContext => (
         <header className="header z-depth-5">
                 <div>
-                    <h4 onClick={props.handleHomePage} className="header__title">FILMANIA</h4>
+                    <NavLink to="/" className="header__title">FILMANIA</NavLink>
                 </div>
-
                 {
                     props.hidden 
-                        ? <div></div>
-                        : <form onSubmit={props.handleMovieSearchSubmit} className="header__form z-depth-5">
+                        ? <div />
+                        : (
+                        <form onSubmit={props.handleMovieSearchSubmit} className="header__form z-depth-5">
                             <input 
-                                disabled={props.disable ? true : false}
-                                onChange={props.handleMovieSearch} 
-                                className="header__form--input" 
-                                placeholder="SEARCH MOVIES.." 
-                                name="title"
-                                autoComplete="off"
-                                />
-                            <button type="submit" className="material-icons waves-effect waves-light header__form--btn white-text">search</button>
+                              onChange={props.handleMovieSearch} 
+                              className="header__form--input" 
+                              placeholder="SEARCH MOVIES.." 
+                              name="title"
+                              autoComplete="off"
+                            />
+                            <button 
+                              type="submit" 
+                              className="material-icons waves-effect waves-light header__form--btn white-text"
+                            >
+                            search
+                            </button>
                         </form>
+                        )
                 }
-                
-
             <div>
                 {
-                    routeContext.isAuth === false
-                        ?   <div>
-                                <button onClick={routeContext.handleLoginModal} className="btn-small waves-effect waves-light header__form--btn--login">LOG IN</button>
-                                <button onClick={props.handleSignupModal} className="btn-small waves-effect waves-light header__form--btn--signup">SIGN UP</button>
-                            </div>
-                        :   <div>
-                                <NavLink to="/favorites" className="btn-small waves-effect waves-light header__form--btn--favorites">FAVORITES</NavLink>
-                                <button onClick={routeContext.handleLogout} className="btn-small waves-effect waves-light header__form--btn--signout">SIGN OUT</button>
-                            </div>
+                routeContext.isAuth === false
+                    ? (
+                    <div>
+                        <button 
+                          onClick={routeContext.handleLoginModal} 
+                          className="btn-small waves-effect waves-light header__form--btn--login"
+                          type="button"
+                        >
+                        LOG IN
+                        </button>
+                        <button 
+                          onClick={props.handleSignupModal} 
+                          className="btn-small waves-effect waves-light header__form--btn--signup"
+                          type="button"
+                        >
+                        SIGN UP
+                        </button>
+                    </div>
+                    )
+                    : (
+                    <div>
+                        <NavLink to="/favorites" className="btn-small waves-effect waves-light header__form--btn--favorites">FAVORITES</NavLink>
+                        <button 
+                          onClick={routeContext.handleLogout} 
+                          className="btn-small waves-effect waves-light header__form--btn--signout"
+                          type="button"
+                        >
+                        SIGN OUT
+                        </button>
+                    </div>
+                    )
                 }
-                
             </div>
         </header>
-        )}
+        )
     }
     </RouteContext.Consumer>
     </div>
 );
 
-export default Header;
+header.propTypes = {
+  hidden: PropTypes.bool,
+  handleMovieSearch: PropTypes.func,
+  handleMovieSearchSubmit: PropTypes.func,
+  handleSignupModal: PropTypes.func
+};
+
+header.defaultProps = {
+  hidden: true,
+  handleMovieSearch: () => {},
+  handleMovieSearchSubmit: () => {},
+  handleSignupModal: () => {}
+};
+
+export default header;

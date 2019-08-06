@@ -24,6 +24,16 @@
         "comma-dangle": "off",
         "indent": "off",
         "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/label-has-associated-control": [ "error", {
+            "required": {
+                "some": [ "nesting", "id"  ]
+            }
+        }],
+        "jsx-a11y/label-has-for": [ "error", {
+            "required": {
+                "some": [ "nesting", "id"  ]
+            }
+        }],
         "jsx-a11y/no-noninteractive-element-interactions": "off",
         "max-len": "off",
         "max-lines": "off",
