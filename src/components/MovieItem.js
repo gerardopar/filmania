@@ -12,7 +12,11 @@ const movieItem = props => (
                     <i className="material-icons movieDetails__icon">star</i>
                     <p className="movieDetails__text">{props.vote_average}</p>
                 </div>
-                <img className="movieItem__poster z-depth-5" src={`https://image.tmdb.org/t/p/w500/${props.poster_path}`} alt="movie poster" />
+                <img 
+                  className="movieItem__poster z-depth-5" 
+                  src={props.poster_path !== null ? `https://image.tmdb.org/t/p/w500/${props.poster_path}` : 'https://s3-ap-southeast-1.amazonaws.com/silverscreen-photos/1534489151m000001.jpg'}
+                  alt="movie poster"
+                />
             </React.Fragment>
             )
                         : (
@@ -21,7 +25,11 @@ const movieItem = props => (
                     <i className="material-icons movieDetails__icon">star</i>
                     <p className="movieDetails__text">{props.vote_average}</p>
                 </div>
-                <img className="movieItem__poster z-depth-5" src={`https://image.tmdb.org/t/p/w500/${props.poster_path}`} alt="movie poster" />
+                <img
+                  className="movieItem__poster z-depth-5"
+                  src={props.poster_path !== null ? `https://image.tmdb.org/t/p/w500/${props.poster_path}` : 'https://s3-ap-southeast-1.amazonaws.com/silverscreen-photos/1534489151m000001.jpg'}
+                  alt="movie poster"
+                />
             </Link>
             )
         }

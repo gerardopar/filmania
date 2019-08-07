@@ -12,7 +12,7 @@ const movieDetails = props => (
           className="movieDetails__backdrop z-depth-5"
           style={{ backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0.20), rgba(66, 66, 66, 0.75)), url(${props.movie_backdrop})` }}
         >
-            <img className="movieDetails__poster z-depth-5" src={props.movie_poster} alt="poster" />
+            <img className="movieDetails__poster z-depth-5" src={props.movie_poster} alt="movie poster" />
             <h1 className="movieDetails__title">{props.movie_title}</h1>
             <p className="movieDetails__text">
             {props.movie_rdate} 

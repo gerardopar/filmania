@@ -21,7 +21,7 @@ class Movie extends Component {
             movie_overview: '',
             movie_id: '',
             movie_length: '',
-            movie_poster: '',
+            movie_poster: null,
             movie_rdate: '',
             movie_title: '',
             movie_trailer: '',

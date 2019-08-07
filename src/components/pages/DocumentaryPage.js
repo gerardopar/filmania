@@ -1,8 +1,7 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import RouteContext from '../../context/route-context';
-
+import PropTypes from 'prop-types';
 // * importing components
 import Header from '../header/Header';
 import LoginModal from '../modals/LoginModal';
@@ -11,6 +10,7 @@ import Spinner from '../spinner/Spinner';
 import Navigation from '../nav/Navigation';
 import MobileNavigation from '../nav/MovileNavigation';
 import MovieList from '../MovieList';
+import RouteContext from '../../context/route-context';
 
 class DocumentaryPage extends Component {
     constructor(props) {
@@ -19,26 +19,25 @@ class DocumentaryPage extends Component {
         this.state = { // initial state
             movies: [],
             filteredMovies: [],
-            page: 1,
             showSignupModal: false,
             Errors: {
                 signup: null
             }
         };
-
-        this.handleMovies = this.handleMovies.bind(this);
-        this.handleMovieSearch = this.handleMovieSearch.bind(this);
-        this.handleMovieSearchSubmit = this.handleMovieSearchSubmit.bind(this);
-        this.handleSignupModal = this.handleSignupModal.bind(this);
-        this.handleSignup = this.handleSignup.bind(this);
     }
 
     componentDidMount() {
         this.handleMovies();
     }
 
+    handleSignupModal = () => {
+        this.setState(prevState => ({
+            showSignupModal: !prevState.showSignupModal
+        }));
+    }
+
     // method: handles user signup
-    handleSignup(e) {
+    handleSignup = (e) => {
         e.preventDefault();
         fetch('https://filmania-rest-api.herokuapp.com/signup', {
         method: 'PUT',
@@ -64,6 +63,7 @@ class DocumentaryPage extends Component {
             return res.json();
         })
         .then((result) => {
+            console.log(result);
             this.setState({ showSignupModal: false });
         })
         .catch((err) => {
@@ -72,7 +72,7 @@ class DocumentaryPage extends Component {
         });
     }
 
-    handleMovieSearch(e) {
+    handleMovieSearch = (e) => {
         e.preventDefault();
         const movieSearched = e.target.value.trim().toUpperCase(); // onchange user input
 
@@ -83,13 +83,13 @@ class DocumentaryPage extends Component {
         }));
     }
 
-    handleMovieSearchSubmit(e) {
+    handleMovieSearchSubmit = (e) => {
         e.preventDefault();
-        const movie_title = e.target.elements.title.value;
-        if (movie_title === '' || movie_title.length === 0 || movie_title === null || movie_title === undefined) {
+        const movieTitle = e.target.elements.title.value;
+        if (movieTitle === '' || movieTitle.length === 0 || movieTitle === null || movieTitle === undefined) {
             console.log('no movie searched');
         } else {
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movie_title}&page=1&include_adult=false`, {
+        fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movieTitle}&page=1&include_adult=false`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ class DocumentaryPage extends Component {
         }
     }
 
-    handleMovies(e, pageNumber) {
+    handleMovies = (pageNumber) => {
         const page = pageNumber;
 
         fetch(`https://filmania-rest-api.herokuapp.com/movies/documentary?page=${page}`, {
@@ -122,15 +122,8 @@ class DocumentaryPage extends Component {
         });
 }
 
-    handleSignupModal() {
-        this.setState(() => ({
-            showSignupModal: !this.state.showSignupModal
-        }));
-    }
-
     render() {
         return (
-            
             <div>
             <ReactCSSTransitionGroup
               transitionName="trans"
@@ -138,13 +131,13 @@ class DocumentaryPage extends Component {
               transitionLeaveTimeout={500}
             >
                 {
-                    this.props.showLoginModal 
-                        ? (
-<LoginModal
-  handleLoginModal={this.props.handleLoginModal} 
-/>
-) 
-                        : null
+                this.props.showLoginModal 
+                    ? (
+                    <LoginModal
+                      handleLoginModal={this.props.handleLoginModal} 
+                    />
+                    ) 
+                    : null
                 }
             </ReactCSSTransitionGroup>
             <ReactCSSTransitionGroup
@@ -153,15 +146,15 @@ class DocumentaryPage extends Component {
               transitionLeaveTimeout={500}
             >
                 {
-                    this.state.showSignupModal 
-                        ? (
-<SignupModal 
-  signupError={this.state.Errors.signup}
-  handleSignup={this.handleSignup}
-  handleSignupModal={this.handleSignupModal} 
-/>
-) 
-                        : null
+                this.state.showSignupModal 
+                    ? (
+                    <SignupModal 
+                      signupError={this.state.Errors.signup}
+                      handleSignup={this.handleSignup}
+                      handleSignupModal={this.handleSignupModal} 
+                    />
+                    ) 
+                    : null
                 }
             </ReactCSSTransitionGroup>
                 <Header 
@@ -174,42 +167,47 @@ class DocumentaryPage extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
-
+                    
                     <RouteContext.Consumer>
                     {routeContext => (
                     <React.Fragment>
-                    <button className="material-icons waves-effect waves-light mobile__nav--btn--open" onClick={routeContext.handleMobileNav}>menu</button>
+                    <button 
+                      className="material-icons waves-effect waves-light mobile__nav--btn--open" 
+                      onClick={routeContext.handleMobileNav}
+                      type="button"
+                    >
+                    menu
+                    </button>
                         <ReactCSSTransitionGroup
                           transitionName="trans"
                           transitionEnterTimeout={500}
                           transitionLeaveTimeout={500}
                         >
                             {
-                                routeContext.showMobileNav 
-                                    ? (
-<MobileNavigation 
-  handleSignupModal={this.handleSignupModal}
-  handleMobileNav={routeContext.handleMobileNav} 
-/>
-) 
-                                        : null
+                            routeContext.showMobileNav 
+                                ? (
+                                <MobileNavigation 
+                                  handleSignupModal={this.handleSignupModal}
+                                  handleMobileNav={routeContext.handleMobileNav} 
+                                />
+                                ) 
+                                : null
                             }
                         </ReactCSSTransitionGroup>
                     </React.Fragment>
                                         )
                     }
                     </RouteContext.Consumer>
-
                         {
-                            this.state.movies.length === 0 
-                                ? <Spinner />
-                                : (
-<MovieList 
-  filteredMovies={this.state.filteredMovies}
-  movies={this.state.movies}
-  handleMovies={this.handleMovies}
-/>
-)
+                        this.state.movies.length === 0 
+                            ? <Spinner />
+                            : (
+                            <MovieList 
+                              filteredMovies={this.state.filteredMovies}
+                              movies={this.state.movies}
+                              handleMovies={this.handleMovies}
+                            />
+                            )
                         }
                     </div>
                 </div>
@@ -217,5 +215,17 @@ class DocumentaryPage extends Component {
         );
     }
 }
+
+DocumentaryPage.propTypes = {
+    history: PropTypes.objectOf(PropTypes.any),
+    handleLoginModal: PropTypes.func,
+    showLoginModal: PropTypes.func
+};
+
+DocumentaryPage.defaultProps = {
+    history: {},
+    handleLoginModal: () => {},
+    showLoginModal: () => {}
+};
 
 export default DocumentaryPage;

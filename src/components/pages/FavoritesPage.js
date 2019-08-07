@@ -1,10 +1,8 @@
 // * importing modules
 import React, { Component } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import PropTypes from 'prop-types';
 // * importing components
 import Header from '../header/Header';
-import LoginModal from '../modals/LoginModal';
-import SignupModal from '../modals/SignupModal';
 import Spinner from '../spinner/Spinner';
 import Navigation from '../nav/Navigation';
 import FavMovieItem from '../FavMovieItem';
@@ -14,75 +12,21 @@ class FavoritesPage extends Component {
         super(props);
 
         this.state = { // initial state
-            movies: [],
-            filteredMovies: [],
-            page: 1,
-            showSignupModal: false
+            movies: []
         };
-
-        this.handleFavMovies = this.handleFavMovies.bind(this);
-        this.handleDeleteMovie = this.handleDeleteMovie.bind(this);
-
-        this.handleMovieSearch = this.handleMovieSearch.bind(this);
-        this.handleMovieSearchSubmit = this.handleMovieSearchSubmit.bind(this);
-        this.handleSignupModal = this.handleSignupModal.bind(this);
-        this.handleSignup = this.handleSignup.bind(this);
     }
 
     componentDidMount() {
         this.props.token ? this.handleFavMovies() : null;
     }
 
-    // method: handles user signup
-    handleSignup(e) {
+    handleMovieSearchSubmit = (e) => {
         e.preventDefault();
-        fetch('https://filmania-rest-api.herokuapp.com/signup', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: e.target.elements.email.value,
-            password: e.target.elements.password.value,
-            movies: []
-        })
-        })
-        .then((res) => {
-            if (res.status === 422) {
-            throw new Error(
-                "Validation failed. Make sure the email address isn't used yet!"
-            );
-            }
-            if (res.status !== 200 && res.status !== 201) {
-            console.log('Error!');
-            throw new Error('Creating a user failed!');
-            }
-            return res.json();
-        })
-        .then((result) => {
-            this.setState({ showSignupModal: false });
-        })
-        .catch(err => console.log(err));
-    }
-
-    handleMovieSearch(e) {
-        e.preventDefault();
-        const movieSearched = e.target.value.trim().toUpperCase(); // onchange user input
-
-        const filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(movieSearched.toLowerCase())); 
-
-        this.setState(() => ({
-            filteredMovies // set the filtered movies array
-        }));
-    }
-
-    handleMovieSearchSubmit(e) {
-        e.preventDefault();
-        const movie_title = e.target.elements.title.value;
-        if (movie_title === '' || movie_title.length === 0 || movie_title === null || movie_title === undefined) {
+        const movieTitle = e.target.elements.title.value;
+        if (movieTitle === '' || movieTitle.length === 0 || movieTitle === null || movieTitle === undefined) {
             console.log('Movie does not exist!');
         } else {
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movie_title}&page=1&include_adult=false`, {
+        fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movieTitle}&page=1&include_adult=false`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +41,7 @@ class FavoritesPage extends Component {
         }
     }
 
-    handleFavMovies() {
+    handleFavMovies = () => {
         fetch('https://filmania-rest-api.herokuapp.com/movies/favorites', {
             headers: {
                 Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
@@ -112,14 +56,9 @@ class FavoritesPage extends Component {
             console.log(err);
         });
 }
+    
 
-    handleSignupModal() {
-        this.setState(() => ({
-            showSignupModal: !this.state.showSignupModal
-        }));
-    }
-
-    handleDeleteMovie(e, id) {
+    handleDeleteMovie = (e, id) => {
         e.preventDefault();
 
         fetch('https://filmania-rest-api.herokuapp.com/movies/deleteFav', {
@@ -141,7 +80,7 @@ class FavoritesPage extends Component {
             }
             return res.json();
         })
-        .then((result) => {
+        .then(() => {
             this.setState(prevState => ({
                 movies: prevState.movies.filter(movie => movie._id !== id)
             }));
@@ -153,43 +92,9 @@ class FavoritesPage extends Component {
 
     render() {
         return (
-            
             <div>
-            <ReactCSSTransitionGroup
-              transitionName="trans"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={500}
-            >
-                {
-                    this.props.showLoginModal 
-                        ? (
-<LoginModal
-  handleLoginModal={this.props.handleLoginModal} 
-/>
-) 
-                        : null
-                }
-            </ReactCSSTransitionGroup>
-            <ReactCSSTransitionGroup
-              transitionName="trans"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={500}
-            >
-                {
-                    this.state.showSignupModal 
-                        ? (
-<SignupModal 
-  handleSignup={this.handleSignup}
-  handleSignupModal={this.handleSignupModal} 
-/>
-) 
-                        : null
-                }
-            </ReactCSSTransitionGroup>
                 <Header 
-                  handleSignupModal={this.handleSignupModal} 
                   handleMovieSearchSubmit={this.handleMovieSearchSubmit}
-                  handleMovieSearch={this.handleMovieSearch}
                 />
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
@@ -198,15 +103,15 @@ class FavoritesPage extends Component {
                     <div className="layout__col--two z-depth-5">
                         <div className="movieList__wrap z-depth-5">
                         {
-                            this.state.movies.length === 0 
-                                ? <Spinner />
-                                : this.state.movies.map((moviesList, index) => (
-                                    <FavMovieItem 
-                                      handleDeleteMovie={this.handleDeleteMovie}
-                                      {...moviesList}
-                                      key={index}
-                                    />
-))
+                        this.state.movies.length === 0 
+                            ? <Spinner />
+                            : this.state.movies.map(movie => (
+                                <FavMovieItem 
+                                  handleDeleteMovie={this.handleDeleteMovie}
+                                  {...movie}
+                                  key={movie._id}
+                                />
+                            ))
                         }
                         </div>
                     </div>
@@ -215,5 +120,15 @@ class FavoritesPage extends Component {
         );
     }
 }
+
+FavoritesPage.propTypes = {
+    history: PropTypes.objectOf(PropTypes.any),
+    token: PropTypes.string
+};
+
+FavoritesPage.defaultProps = {
+    history: {},
+    token: ''
+};
 
 export default FavoritesPage;
