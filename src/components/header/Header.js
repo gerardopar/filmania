@@ -84,7 +84,7 @@ header.propTypes = {
 };
 
 header.defaultProps = {
-  hidden: true,
+  hidden: false,
   handleMovieSearch: () => {},
   handleMovieSearchSubmit: () => {},
   handleSignupModal: () => {}

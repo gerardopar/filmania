@@ -1,14 +1,14 @@
-//importing modules
+// importing modules
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-//importing image
-import _404_img from '../../assets/img/404-img.png';
+// importing image
+import pageNotFoundImg from '../../assets/img/404-img.png';
 
-const NotFoundPage = () => (
+const pageNotFound = () => (
     <div className="errorPage">
         <div className="errorPage__col--one">
             <h1 className="errorPage__num">4</h1>
-            <img className="errorPage__img" src={_404_img} />
+            <img className="errorPage__img" src={pageNotFoundImg} alt="page not found" />
             <h1 className="errorPage__num">4</h1>
         </div>
         <p className="errorPage__text">page not found</p>
@@ -16,4 +16,4 @@ const NotFoundPage = () => (
     </div>
 );
 
-export default NotFoundPage;
+export default pageNotFound;

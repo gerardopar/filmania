@@ -1,6 +1,7 @@
 // * importing modules
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import PropTypes from 'prop-types';
 
 // * importing components
 import Header from '../header/Header';
@@ -32,12 +33,6 @@ class Movie extends Component {
                 signup: null
             }
         };
-
-        this.handleSignupModal = this.handleSignupModal.bind(this);
-        this.handleSignup = this.handleSignup.bind(this);
-        this.handleGetMovieDetails = this.handleGetMovieDetails.bind(this);
-        this.handleSimiliarMovies = this.handleSimiliarMovies.bind(this);
-        this.handleAddMovieToFav = this.handleAddMovieToFav.bind(this);
     }
 
     componentDidMount() {
@@ -45,8 +40,14 @@ class Movie extends Component {
         this.handleSimiliarMovies();
     }
 
+    handleSignupModal = () => {
+        this.setState(prevState => ({
+            showSignupModal: !prevState.showSignupModal
+        }));
+    }
+
     // method: handles user signup
-    handleSignup(e) {
+    handleSignup = (e) => {
         e.preventDefault();
         fetch('https://filmania-rest-api.herokuapp.com/signup', {
         method: 'PUT',
@@ -71,7 +72,7 @@ class Movie extends Component {
             }
             return res.json();
         })
-        .then((result) => {
+        .then(() => {
             this.setState({ showSignupModal: false });
         })
         .catch((err) => {
@@ -80,10 +81,11 @@ class Movie extends Component {
         });
     }
 
-    handleGetMovieDetails() {
+    handleGetMovieDetails = () => {
         // get params id
         const movieId = this.props.match.params.id;
 
+        // # fetching the movie details
         fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=35d4df93498d535a82e07c079691b79c&language=en-US`, {
             method: 'GET',
             headers: {
@@ -91,24 +93,25 @@ class Movie extends Component {
             }
         })
         .then(data => data.json())
-        .then((movie) => {
+        .then((movieData) => {
             this.setState(() => ({
-                movie_backdrop: `https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`,
-                movie_id: movie.id,
-                movie_length: movie.runtime,
-                movie_overview: movie.overview,
-                movie_poster: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
-                movie_rating: movie.vote_average,
-                movie_rdate: movie.release_date,
-                movie_title: movie.title,
+                movie_backdrop: `https://image.tmdb.org/t/p/w1280/${movieData.backdrop_path}`,
+                movie_id: movieData.id,
+                movie_length: movieData.runtime,
+                movie_overview: movieData.overview,
+                movie_poster: `https://image.tmdb.org/t/p/w500/${movieData.poster_path}`,
+                movie_rating: movieData.vote_average,
+                movie_rdate: movieData.release_date,
+                movie_title: movieData.title,
             }));
-            movie.genres.forEach((movie) => {
-                this.setState(() => ({
-                    movie_genres: this.state.movie_genres.concat(` - ${movie.name}`)
+            movieData.genres.forEach((movie) => {
+                this.setState(prevState => ({
+                    movie_genres: prevState.movie_genres.concat(` - ${movie.name}`)
                 }));
             });
 
-            fetch(`http://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=35d4df93498d535a82e07c079691b79c`, {
+            // # fetching the movie trailer
+            fetch(`http://api.themoviedb.org/3/movie/${movieData.id}/videos?api_key=35d4df93498d535a82e07c079691b79c`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -116,9 +119,7 @@ class Movie extends Component {
             })
             .then(data => data.json())
             .then((trailer) => {
-                this.setState(() => ({
-                    movie_trailer: `https://www.youtube.com/embed/${trailer.results[0].key}`
-                }));
+                this.setState({ movie_trailer: `https://www.youtube.com/embed/${trailer.results[0].key}` });
             })
             .catch((err) => {
                 console.log(err);
@@ -129,7 +130,7 @@ class Movie extends Component {
         });
     }
 
-    handleSimiliarMovies() {
+    handleSimiliarMovies = () => {
         const movieId = this.props.match.params.id;
 
         fetch(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&page=1`, {
@@ -149,13 +150,7 @@ class Movie extends Component {
         });
     }
 
-    handleSignupModal() {
-        this.setState(() => ({
-            showSignupModal: !this.state.showSignupModal
-        }));
-    }
-
-    handleAddMovieToFav(e, id, poster, title, rating) {
+    handleAddMovieToFav = (e, id, poster, title, rating) => {
         e.preventDefault();
 
         const movieToAdd = {
@@ -177,7 +172,7 @@ class Movie extends Component {
             })
         })
         .then(data => data.json())
-        .then((data) => {
+        .then(() => {
             // console.log(data);
         })
         .catch((err) => {
@@ -194,13 +189,13 @@ class Movie extends Component {
                   transitionLeaveTimeout={500}
                 >
                     {
-                        this.props.showLoginModal 
-                            ? (
-<LoginModal
-  handleLoginModal={this.props.handleLoginModal} 
-/>
-) 
-                            : null
+                    this.props.showLoginModal 
+                        ? (
+                    <LoginModal
+                      handleLoginModal={this.props.handleLoginModal} 
+                    />
+                        ) 
+                        : null
                     }
                 </ReactCSSTransitionGroup>
                 <ReactCSSTransitionGroup
@@ -209,15 +204,15 @@ class Movie extends Component {
                   transitionLeaveTimeout={500}
                 >
                     {
-                        this.state.showSignupModal 
-                            ? (
-<SignupModal 
-  signupError={this.state.Errors.signup}
-  handleSignup={this.handleSignup}
-  handleSignupModal={this.handleSignupModal} 
-/>
-) 
-                            : null
+                    this.state.showSignupModal 
+                        ? (
+                    <SignupModal 
+                      signupError={this.state.Errors.signup}
+                      handleSignup={this.handleSignup}
+                      handleSignupModal={this.handleSignupModal} 
+                    />
+                    ) 
+                        : null
                     }
                 </ReactCSSTransitionGroup>
                 <Header 
@@ -233,23 +228,42 @@ class Movie extends Component {
                     </div>
                     <div className="layout__col--two z-depth-5">
                         {
-                            this.state.movie_title.length === 0 
-                                ? <Spinner /> 
-                                : (
-<MovieDetails 
-  handleAddMovieToFav={this.handleAddMovieToFav}
-  handleRedirectHome={this.handleRedirectHome}
-  hidden={this.state.hidden}
-  {...this.state} 
-/>
-)
+                        this.state.movie_title.length === 0 
+                            ? <Spinner /> 
+                            : (
+                        <MovieDetails 
+                          handleAddMovieToFav={this.handleAddMovieToFav}
+                          handleRedirectHome={this.handleRedirectHome}
+                          hidden={this.state.hidden}
+                          {...this.state} 
+                        />
+                        )
                         }
-                        
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+Movie.propTypes = {
+    match: PropTypes.objectOf(PropTypes.any),
+    isAuth: PropTypes.bool,
+    token: PropTypes.string,
+    handleLoginModal: PropTypes.func,
+    handleLogout: PropTypes.func,
+    showLoginModal: PropTypes.func,
+    showSignupModal: PropTypes.func,
+};
+
+Movie.defaultProps = {
+    match: {},
+    isAuth: false,
+    token: '',
+    handleLoginModal: () => {},
+    handleLogout: () => {},
+    showLoginModal: () => {},
+    showSignupModal: () => {}
+};
 
 export default Movie;
