@@ -24,18 +24,20 @@ class FavoritesPage extends Component {
         e.preventDefault();
         const movieTitle = e.target.elements.title.value;
         if (movieTitle === '' || movieTitle.length === 0 || movieTitle === null || movieTitle === undefined) {
-            console.log('Movie does not exist!');
+            console.log('no movie searched');
         } else {
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&query=${movieTitle}&page=1&include_adult=false`, {
-            method: 'GET',
+            fetch('https://filmania-rest-api.herokuapp.com/movies/postMovieSearched', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({
+                movieTitle
+            })
         })
         .then(data => data.json())
         .then((movie) => {
-            const movieId = movie.results[0].id;
-            this.props.history.push(`/movie/${movieId}`);
+            this.props.history.push(`/movie/${movie.movieId}`);
         })
         .catch(err => (err));
         }

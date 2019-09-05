@@ -23,7 +23,7 @@ class Movie extends Component {
             movie_length: '',
             movie_poster: null,
             movie_rdate: '',
-            movie_title: '',
+            movie_title: null,
             movie_trailer: '',
             movie_rating: '',
             related_movies: [],
@@ -86,43 +86,34 @@ class Movie extends Component {
         const movieId = this.props.match.params.id;
 
         // # fetching the movie details
-        fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=35d4df93498d535a82e07c079691b79c&language=en-US`, {
-            method: 'GET',
+        fetch('https://filmania-rest-api.herokuapp.com/movies/postMovieDetails', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({
+                movieId
+            })
         })
         .then(data => data.json())
         .then((movieData) => {
+            console.log(movieData);
+            console.log(movieData.movie.video);
             this.setState(() => ({
-                movie_backdrop: `https://image.tmdb.org/t/p/w1280/${movieData.backdrop_path}`,
-                movie_id: movieData.id,
-                movie_length: movieData.runtime,
-                movie_overview: movieData.overview,
-                movie_poster: `https://image.tmdb.org/t/p/w500/${movieData.poster_path}`,
-                movie_rating: movieData.vote_average,
-                movie_rdate: movieData.release_date,
-                movie_title: movieData.title,
+                movie_backdrop: movieData.movie.backdrop,
+                movie_id: movieData.movie.id,
+                movie_length: movieData.movie.length,
+                movie_overview: movieData.movie.overview,
+                movie_poster: movieData.movie.poster,
+                movie_rating: movieData.movie.rating,
+                movie_rdate: movieData.movie.rdate,
+                movie_title: movieData.movie.title,
+                movie_trailer: movieData.movie.video
             }));
-            movieData.genres.forEach((movie) => {
+            movieData.movie.genres.forEach((movie) => {
                 this.setState(prevState => ({
                     movie_genres: prevState.movie_genres.concat(` - ${movie.name}`)
                 }));
-            });
-
-            // # fetching the movie trailer
-            fetch(`http://api.themoviedb.org/3/movie/${movieData.id}/videos?api_key=35d4df93498d535a82e07c079691b79c`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-            })
-            .then(data => data.json())
-            .then((trailer) => {
-                this.setState({ movie_trailer: `https://www.youtube.com/embed/${trailer.results[0].key}` });
-            })
-            .catch((err) => {
-                console.log(err);
             });
         })
         .catch((err) => {
@@ -133,16 +124,20 @@ class Movie extends Component {
     handleSimiliarMovies = () => {
         const movieId = this.props.match.params.id;
 
-        fetch(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=35d4df93498d535a82e07c079691b79c&language=en-US&page=1`, {
-            method: 'GET',
+        // # fetching the movie details
+        fetch('https://filmania-rest-api.herokuapp.com/movies/postSimilarMovies', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({
+                movieId
+            })
         })
         .then(data => data.json())
         .then((movies) => {
             this.setState(() => ({
-                related_movies: [...movies.results]
+                related_movies: movies.movies
             }));
         })
         .catch((err) => {
@@ -228,9 +223,9 @@ class Movie extends Component {
                     </div>
                     <div className="layout__col--two z-depth-5">
                         {
-                        this.state.movie_title.length === 0 
-                            ? <Spinner /> 
-                            : (
+                        this.state.movie_title === null 
+                             ? <Spinner /> 
+                             : (
                         <MovieDetails 
                           handleAddMovieToFav={this.handleAddMovieToFav}
                           handleRedirectHome={this.handleRedirectHome}
