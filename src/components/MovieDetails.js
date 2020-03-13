@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 // importing components
 import MovieItem from './MovieItem';
+import NoRelatedMovies from './NoRelatedMovies';
 
 const movieDetails = props => (
     <div className="movieDetails">
@@ -69,7 +70,7 @@ const movieDetails = props => (
                       key={props.movie_id}
                       hidden={props.hidden}
                     />
-                )) : null
+                )) : <NoRelatedMovies />
             }
         </div>
     </div>

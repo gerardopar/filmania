@@ -29,6 +29,7 @@ class Movie extends Component {
             related_movies: [],
             hidden: true,
             showSignupModal: false,
+            isLoading: true,
             Errors: {
                 signup: null
             }
@@ -103,7 +104,8 @@ class Movie extends Component {
                 movie_rating: movieData.movie.rating,
                 movie_rdate: movieData.movie.rdate,
                 movie_title: movieData.movie.title,
-                movie_trailer: movieData.movie.video
+                movie_trailer: movieData.movie.video,
+                isLoading: false
             }));
             movieData.movie.genres.forEach((movie) => {
                 this.setState(prevState => ({
@@ -215,7 +217,7 @@ class Movie extends Component {
                     </div>
                     <div className="layout__col--two z-depth-5">
                         {
-                        this.state.movie_title === null 
+                        this.state.isLoading 
                              ? <Spinner /> 
                              : (
                         <MovieDetails 
