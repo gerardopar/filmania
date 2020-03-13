@@ -22,7 +22,9 @@ class FantasyPage extends Component {
             showSignupModal: false,
             Errors: {
                 signup: null
-            }
+            },
+            maxPage: 0,
+            nextPage: 1
         };
     }
 
@@ -106,8 +108,8 @@ class FantasyPage extends Component {
         }
     }
 
-    handleMovies = (pageNumber) => {
-        const page = pageNumber;
+    handleMovies = () => {
+        const page = 1;
 
         fetch(`https://filmania-rest-api.herokuapp.com/movies/fantasy?page=${page}`, {
             method: 'GET',
@@ -117,12 +119,38 @@ class FantasyPage extends Component {
         })
         .then(res => res.json())
         .then((data) => {
-            this.setState(({ movies: [...data.movies] }));
+            this.setState(({ 
+                movies: [...data.movies],
+                nextPage: 2, 
+                maxPage: data.totalPages 
+            }));
         })
         .catch((err) => {
             console.log(err);
         });
-}
+    }
+
+    handlePagination = () => {
+        this.setState(prevState => ({
+            nextPage: prevState.nextPage + 1
+        }));
+
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/fantasy?page=${this.state.nextPage}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then((data) => {
+            this.setState(prevState => ({
+                movies: [...prevState.movies, ...data.movies]
+            }));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
 
     render() {
         return (
@@ -205,6 +233,9 @@ class FantasyPage extends Component {
                             ? <Spinner />
                             : (
                             <MovieList 
+                              handlePagination={this.handlePagination}
+                              nextPage={this.state.nextPage}
+                              maxPage={this.state.maxPage}
                               filteredMovies={this.state.filteredMovies}
                               movies={this.state.movies}
                               handleMovies={this.handleMovies}
@@ -221,13 +252,13 @@ class FantasyPage extends Component {
 FantasyPage.propTypes = {
     history: PropTypes.objectOf(PropTypes.any),
     handleLoginModal: PropTypes.func,
-    showLoginModal: PropTypes.func
+    showLoginModal: PropTypes.bool
 };
 
 FantasyPage.defaultProps = {
     history: {},
     handleLoginModal: () => {},
-    showLoginModal: () => {}
+    showLoginModal: false
 };
 
 export default FantasyPage;

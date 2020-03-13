@@ -38,14 +38,14 @@ const movieItem = props => (
 
 movieItem.propTypes = {
     hidden: PropTypes.bool,
-    id: PropTypes.string,
+    id: PropTypes.number,
     poster_path: PropTypes.string,
     vote_average: PropTypes.number
 };
 
 movieItem.defaultProps = {
     hidden: false,
-    id: '',
+    id: 0,
     poster_path: '',
     vote_average: 0
 };
