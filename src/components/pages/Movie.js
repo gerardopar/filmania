@@ -86,20 +86,15 @@ class Movie extends Component {
         const movieId = this.props.match.params.id;
 
         // # fetching the movie details
-        fetch('https://filmania-rest-api.herokuapp.com/movies/postMovieDetails', {
-            method: 'POST',
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/movie/details/${movieId}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                movieId
-            })
+            }
         })
         .then(data => data.json())
         .then((movieData) => {
-            console.log(movieData);
-            console.log(movieData.movie.video);
-            this.setState(() => ({
+            this.setState(({
                 movie_backdrop: movieData.movie.backdrop,
                 movie_id: movieData.movie.id,
                 movie_length: movieData.movie.length,
@@ -125,14 +120,11 @@ class Movie extends Component {
         const movieId = this.props.match.params.id;
 
         // # fetching the movie details
-        fetch('https://filmania-rest-api.herokuapp.com/movies/postSimilarMovies', {
-            method: 'POST',
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/similar/${movieId}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                movieId
-            })
+            }
         })
         .then(data => data.json())
         .then((movies) => {
