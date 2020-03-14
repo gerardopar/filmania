@@ -5,7 +5,6 @@ import {
  BrowserRouter, Route, Switch, Redirect 
 } from 'react-router-dom';
 import RouteContext from '../context/route-context'; // react context
-
 // * importing components
 import Dashboard from '../components/pages/Dashboard';
 import AdventurePage from '../components/pages/AdventurePage';
@@ -20,6 +19,8 @@ import ThrillerPage from '../components/pages/ThrillerPage';
 import Movie from '../components/pages/Movie';
 import FavoritesPage from '../components/pages/FavoritesPage';
 import PageNotFound from '../components/pages/404page';
+// * importing utils
+import { setToken, removeToken } from '../utils/auth';
 
 // AppRouter component
 class AppRouter extends Component {
@@ -31,9 +32,6 @@ class AppRouter extends Component {
             showLoginModal: false,
             showSignupModal: false,
             showMobileNav: false,
-            Errors: {
-                login: ''
-            }
         };
     }
 
@@ -83,29 +81,16 @@ class AppRouter extends Component {
             }
             return res.json();
         })
-        .then((resData) => {
+        .then((user) => {
             this.setState(() => ({
                 isAuth: true,
-                token: resData.token,
+                token: user.token,
                 showLoginModal: false
             }));
-            const date = Date.now(); // new token date
-            const dateAdded = moment(date).format('MMMM Do YYYY, h:mm:ss a'); // token creation date
-            const dateAhead = moment(date).add(1, 'h'); // token life
-            const dateToBeRemoved = moment(dateAhead._d).format('MMMM Do YYYY, h:mm:ss a'); // token remove date
-            localStorage.setItem('tokenCreated', dateAdded);
-            localStorage.setItem('tokenExpires', dateToBeRemoved);
-            localStorage.setItem('isAuth', true);
-            localStorage.setItem('token', resData.token);
-            localStorage.setItem('userId', resData.userId);
+            setToken(user.userId, user.token);
         })
         .catch((err) => {
             console.log(err);
-            this.setState({
-                Errors: {
-                    login: err.message
-                } 
-            });
         });
     }
 
@@ -142,12 +127,11 @@ class AppRouter extends Component {
           return res.json();
       })
       .then((result) => {
-          console.log(result);
+          console.log(result.message);
           this.setState({ showSignupModal: false });
       })
       .catch((err) => {
           console.log(err);
-          this.setState({ Errors: { signup: err.message } });
       });
   }
 
@@ -158,11 +142,7 @@ class AppRouter extends Component {
             isAuth: false,
             token: null
         }));
-        localStorage.removeItem('tokenCreated');
-        localStorage.removeItem('tokenExpires');
-        localStorage.removeItem('isAuth');
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
+        removeToken();
     }
 
     // method : handles Auto logout 
@@ -171,11 +151,7 @@ class AppRouter extends Component {
             isAuth: false,
             token: null
         }));
-        localStorage.removeItem('tokenCreated');
-        localStorage.removeItem('tokenExpires');
-        localStorage.removeItem('isAuth');
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
+        removeToken();
     }
 
     handleMobileNav = () => {
@@ -320,7 +296,6 @@ class AppRouter extends Component {
                   render={props => (
                     <FavoritesPage
                       showLoginModal={this.state.showLoginModal}
-                      showSignupModal={this.state.showSignupModal}
                       token={this.state.token}
                       {...props}
                     />
@@ -342,7 +317,6 @@ class AppRouter extends Component {
             <div>
             <RouteContext.Provider
               value={{ 
-                        loginError: this.state.Errors.login,
                         handleLogin: this.handleLogin,
                         handleLoginModal: this.handleLoginModal,
                         handleSignup: this.handleSignup,
