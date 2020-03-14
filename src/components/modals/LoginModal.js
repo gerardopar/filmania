@@ -17,6 +17,7 @@ const loginModal = () => (
                             &nbsp; EMAIL
                         </label>
                         <input className="modal__input" type="email" id="email" name="email" autoComplete="off" />
+                        <p className="modal__error">{routeContext.emailError}</p>
                     </div>
                     <div className="modal__input--wrap">
                         <label htmlFor="password" className="modal__input--label">
@@ -25,6 +26,7 @@ const loginModal = () => (
                             &nbsp; PASSWORD
                         </label>
                         <input className="modal__input" id="password" type="password" name="password" autoComplete="off" />
+                        <p className="modal__error">{routeContext.passwordError}</p>
                     </div>
                     <div className="modal__btn--wrap">
                         <button className="modal__btn--login waves-effect waves-light" type="submit">LOG IN</button>

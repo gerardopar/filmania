@@ -32,6 +32,8 @@ class AppRouter extends Component {
             showLoginModal: false,
             showSignupModal: false,
             showMobileNav: false,
+            emailError: '',
+            passwordError: ''
         };
     }
 
@@ -50,23 +52,50 @@ class AppRouter extends Component {
         }
     }
 
+    validate = (email, password) => {
+        let isError = false;
+        const errors = {
+            emailError: '',
+            passwordError: '',
+        };
+
+        if (email.length === 0) {
+            isError = true;
+            errors.emailError = 'Email cannot be empty';
+        }
+
+        if (password.length === 0) {
+            isError = true;
+            errors.passwordError = 'Password cannot be empty';
+        }
+
+        this.setState(prevState => ({ ...prevState, ...errors }));
+        return isError;
+    };
+
     handleLoginModal = () => { 
       this.setState(prevState => ({
-          showLoginModal: !prevState.showLoginModal
+          showLoginModal: !prevState.showLoginModal,
+          emailError: '',
+          passwordError: ''
       }));
   }
 
     // method: authenticates user
     handleLogin = (e) => {
         e.preventDefault();
+        const email = e.target.elements.email.value;
+        const password = e.target.elements.password.value;
+        const submitErrors = this.validate(email, password); // validate user input
+        if (!submitErrors) {
         fetch('https://filmania-rest-api.herokuapp.com/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            email: e.target.elements.email.value,
-            password: e.target.elements.password.value
+            email,
+            password
         })
         })
         .then((res) => {
@@ -93,24 +122,31 @@ class AppRouter extends Component {
             console.log(err);
         });
     }
+  }
 
     handleSignupModal = () => {
       this.setState(prevState => ({
-          showSignupModal: !prevState.showSignupModal
+          showSignupModal: !prevState.showSignupModal,
+          emailError: '',
+          passwordError: ''
       }));
     }
 
     // method: handles user signup
     handleSignup = (e) => {
       e.preventDefault();
+      const email = e.target.elements.email.value;
+      const password = e.target.elements.password.value;
+      const submitErrors = this.validate(email, password); // validate user input
+      if (!submitErrors) {
       fetch('https://filmania-rest-api.herokuapp.com/signup', {
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          email: e.target.elements.email.value,
-          password: e.target.elements.password.value,
+          email, 
+          password,
           movies: []
       })
       })
@@ -133,6 +169,7 @@ class AppRouter extends Component {
       .catch((err) => {
           console.log(err);
       });
+    }
   }
 
     // method: handles logout
@@ -322,6 +359,8 @@ class AppRouter extends Component {
                         handleSignup: this.handleSignup,
                         handleSignupModal: this.handleSignupModal,
                         handleLogout: this.handleLogout,
+                        emailError: this.state.emailError,
+                        passwordError: this.state.passwordError,
                         isAuth: this.state.isAuth,
                         showMobileNav: this.state.showMobileNav,
                         handleMobileNav: this.handleMobileNav,

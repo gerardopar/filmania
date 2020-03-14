@@ -113,3 +113,15 @@
     right: 25px;
 }
 
+// modal errors
+.modal__error{
+    color: orangered;
+    padding-left: 4px;
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+    .modal__form{
+        width: 95%;
+    }
+}
