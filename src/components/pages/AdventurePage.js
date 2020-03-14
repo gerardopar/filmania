@@ -17,8 +17,8 @@ class AdventurePage extends Component {
         super(props);
 
         this.state = { // initial state
+            movieName: '',
             movies: [],
-            filteredMovies: [],
             showSignupModal: false,
             Errors: {
                 signup: null
@@ -77,39 +77,11 @@ class AdventurePage extends Component {
     handleMovieSearch = (e) => {
         e.preventDefault();
         const movieSearched = e.target.value.trim().toUpperCase(); // onchange user input
-
-        const filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(movieSearched.toLowerCase())); 
-
-        this.setState(() => ({
-            filteredMovies // set the filtered movies array
-        }));
+        this.setState({ movieName: movieSearched });
     }
 
-    handleMovieSearchSubmit = (e) => {
-        e.preventDefault();
-        const movieTitle = e.target.elements.title.value;
-        if (movieTitle === '' || movieTitle.length === 0 || movieTitle === null || movieTitle === undefined) {
-            console.log('no movie searched');
-        } else {
-            fetch('https://filmania-rest-api.herokuapp.com/movies/postMovieSearched', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                movieTitle
-            })
-        })
-        .then(data => data.json())
-        .then((movie) => {
-            this.props.history.push(`/movie/${movie.movieId}`);
-        })
-        .catch(err => (err));
-        }
-    }
-
-    handleMovies = (pageNumber) => {
-        const page = pageNumber;
+    handleMovies = () => {
+        const page = 1;
 
         fetch(`https://filmania-rest-api.herokuapp.com/movies/adventure?page=${page}`, {
             method: 'GET',
@@ -153,6 +125,8 @@ class AdventurePage extends Component {
     }
 
     render() {
+        const filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(this.state.movieName.toLowerCase()));
+        
         return (
             <div>
             <ReactCSSTransitionGroup
@@ -189,7 +163,6 @@ class AdventurePage extends Component {
             </ReactCSSTransitionGroup>
                 <Header 
                   handleSignupModal={this.handleSignupModal} 
-                  handleMovieSearchSubmit={this.handleMovieSearchSubmit}
                   handleMovieSearch={this.handleMovieSearch}
                 />
                 <div className="layout">
@@ -236,7 +209,7 @@ class AdventurePage extends Component {
                               handlePagination={this.handlePagination}
                               nextPage={this.state.nextPage}
                               maxPage={this.state.maxPage}
-                              filteredMovies={this.state.filteredMovies}
+                              filteredMovies={filteredMovies}
                               movies={this.state.movies}
                               handleMovies={this.handleMovies}
                             />
@@ -250,13 +223,11 @@ class AdventurePage extends Component {
 }
 
 AdventurePage.propTypes = {
-    history: PropTypes.objectOf(PropTypes.any),
     handleLoginModal: PropTypes.func,
     showLoginModal: PropTypes.bool
 };
 
 AdventurePage.defaultProps = {
-    history: {},
     handleLoginModal: () => {},
     showLoginModal: false
 };
