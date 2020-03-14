@@ -29,18 +29,12 @@ class AppRouter extends Component {
             isAuth: false,
             token: null,
             showLoginModal: false,
+            showSignupModal: false,
             showMobileNav: false,
             Errors: {
                 login: ''
             }
         };
-
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
-        this.handleAutoLogout = this.handleAutoLogout.bind(this);
-        this.handleLoginModal = this.handleLoginModal.bind(this);
-        this.handleMobileNav = this.handleMobileNav.bind(this);
-        this.handleNavCollapse = this.handleNavCollapse.bind(this);
     }
 
     componentDidMount() {
@@ -58,14 +52,14 @@ class AppRouter extends Component {
         }
     }
 
-    handleLoginModal() { 
-        this.setState(prevState => ({
-            showLoginModal: !prevState.showLoginModal
-        }));
-    }
+    handleLoginModal = () => { 
+      this.setState(prevState => ({
+          showLoginModal: !prevState.showLoginModal
+      }));
+  }
 
     // method: authenticates user
-    handleLogin(e) {
+    handleLogin = (e) => {
         e.preventDefault();
         fetch('https://filmania-rest-api.herokuapp.com/login', {
         method: 'POST',
@@ -115,8 +109,50 @@ class AppRouter extends Component {
         });
     }
 
+    handleSignupModal = () => {
+      this.setState(prevState => ({
+          showSignupModal: !prevState.showSignupModal
+      }));
+    }
+
+    // method: handles user signup
+    handleSignup = (e) => {
+      e.preventDefault();
+      fetch('https://filmania-rest-api.herokuapp.com/signup', {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          email: e.target.elements.email.value,
+          password: e.target.elements.password.value,
+          movies: []
+      })
+      })
+      .then((res) => {
+          if (res.status === 422) {
+          throw new Error(
+              'Validation failed. Email already in use!'
+          );
+          }
+          if (res.status !== 200 && res.status !== 201) {
+          console.log('Error!');
+          throw new Error('Creating a user failed!');
+          }
+          return res.json();
+      })
+      .then((result) => {
+          console.log(result);
+          this.setState({ showSignupModal: false });
+      })
+      .catch((err) => {
+          console.log(err);
+          this.setState({ Errors: { signup: err.message } });
+      });
+  }
+
     // method: handles logout
-    handleLogout(e) {
+    handleLogout = (e) => {
         e.preventDefault();
         this.setState(() => ({
             isAuth: false,
@@ -130,7 +166,7 @@ class AppRouter extends Component {
     }
 
     // method : handles Auto logout 
-    handleAutoLogout() {
+    handleAutoLogout = () => {
         this.setState(() => ({
             isAuth: false,
             token: null
@@ -142,13 +178,14 @@ class AppRouter extends Component {
         localStorage.removeItem('userId');
     }
 
-    handleMobileNav() {
+    handleMobileNav = () => {
         this.setState(prevState => ({
             showMobileNav: !prevState.showMobileNav
         }));
     }
+    
 
-    handleNavCollapse() {
+    handleNavCollapse = () => {
         this.setState({ showMobileNav: false });
     }
 
@@ -161,6 +198,7 @@ class AppRouter extends Component {
                   render={props => (
                     <Dashboard
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -171,6 +209,7 @@ class AppRouter extends Component {
                   render={props => (
                     <AdventurePage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -181,6 +220,7 @@ class AppRouter extends Component {
                   render={props => (
                     <AnimationPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -191,6 +231,7 @@ class AppRouter extends Component {
                   render={props => (
                     <ComedyPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -201,6 +242,7 @@ class AppRouter extends Component {
                   render={props => (
                     <DocumentaryPage 
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -211,6 +253,7 @@ class AppRouter extends Component {
                   render={props => (
                     <DramaPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -221,6 +264,7 @@ class AppRouter extends Component {
                   render={props => (
                     <FantasyPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -231,6 +275,7 @@ class AppRouter extends Component {
                   render={props => (
                     <HorrorPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -241,6 +286,7 @@ class AppRouter extends Component {
                   render={props => (
                     <ScienceFictionPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -251,6 +297,7 @@ class AppRouter extends Component {
                   render={props => (
                     <ThrillerPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       {...props}
                     />
                 )} 
@@ -261,6 +308,7 @@ class AppRouter extends Component {
                   render={props => (
                     <Movie
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       token={this.state.token}
                       {...props}
                     />
@@ -272,6 +320,7 @@ class AppRouter extends Component {
                   render={props => (
                     <FavoritesPage
                       showLoginModal={this.state.showLoginModal}
+                      showSignupModal={this.state.showSignupModal}
                       token={this.state.token}
                       {...props}
                     />
@@ -296,6 +345,8 @@ class AppRouter extends Component {
                         loginError: this.state.Errors.login,
                         handleLogin: this.handleLogin,
                         handleLoginModal: this.handleLoginModal,
+                        handleSignup: this.handleSignup,
+                        handleSignupModal: this.handleSignupModal,
                         handleLogout: this.handleLogout,
                         isAuth: this.state.isAuth,
                         showMobileNav: this.state.showMobileNav,

@@ -19,10 +19,6 @@ class Dashboard extends Component {
         this.state = { // initial state
             movieName: '',
             movies: [],
-            showSignupModal: false,
-            Errors: {
-                signup: null
-            },
             maxPage: 0,
             nextPage: 1
         };
@@ -30,48 +26,6 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.handleMovies();
-    }
-
-    handleSignupModal = () => {
-        this.setState(prevState => ({
-            showSignupModal: !prevState.showSignupModal
-        }));
-    }
-
-    // method: handles user signup
-    handleSignup = (e) => {
-        e.preventDefault();
-        fetch('https://filmania-rest-api.herokuapp.com/signup', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: e.target.elements.email.value,
-            password: e.target.elements.password.value,
-            movies: []
-        })
-        })
-        .then((res) => {
-            if (res.status === 422) {
-            throw new Error(
-                'Validation failed. Email already in use!'
-            );
-            }
-            if (res.status !== 200 && res.status !== 201) {
-            console.log('Error!');
-            throw new Error('Creating a user failed!');
-            }
-            return res.json();
-        })
-        .then((result) => {
-            console.log(result);
-            this.setState({ showSignupModal: false });
-        })
-        .catch((err) => {
-            console.log(err);
-            this.setState({ Errors: { signup: err.message } });
-        });
     }
 
     handleMovieSearch = (e) => {
@@ -150,19 +104,16 @@ class Dashboard extends Component {
               transitionLeaveTimeout={500}
             >
                 {
-                this.state.showSignupModal 
+                this.props.showSignupModal 
                     ? (
                     <SignupModal 
-                      signupError={this.state.Errors.signup}
-                      handleSignup={this.handleSignup}
-                      handleSignupModal={this.handleSignupModal} 
+                      handleSignupModal={this.props.handleSignupModal} 
                     />
                     ) 
                     : null
                 }
             </ReactCSSTransitionGroup>
                 <Header 
-                  handleSignupModal={this.handleSignupModal} 
                   handleMovieSearch={this.handleMovieSearch}
                 />
                 <div className="layout">
@@ -224,12 +175,16 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
     handleLoginModal: PropTypes.func,
-    showLoginModal: PropTypes.bool
+    handleSignupModal: PropTypes.func,
+    showLoginModal: PropTypes.bool,
+    showSignupModal: PropTypes.bool
 };
 
 Dashboard.defaultProps = {
     handleLoginModal: () => {},
-    showLoginModal: false
+    handleSignupModal: () => {},
+    showLoginModal: false,
+    showSignupModal: false
 };
 
 export default Dashboard;

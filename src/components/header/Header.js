@@ -78,7 +78,7 @@ class Header extends React.Component {
                             LOG IN
                             </button>
                             <button 
-                              onClick={this.props.handleSignupModal} 
+                              onClick={routeContext.handleSignupModal} 
                               className="btn-small waves-effect waves-light header__form--btn--signup"
                               type="button"
                             >
@@ -114,14 +114,12 @@ Header.propTypes = {
   history: PropTypes.objectOf(PropTypes.any),
   hidden: PropTypes.bool,
   handleMovieSearch: PropTypes.func,
-  handleSignupModal: PropTypes.func
 };
 
 Header.defaultProps = {
   history: {},
   hidden: false,
   handleMovieSearch: () => {},
-  handleSignupModal: () => {}
 };
 
 export default withRouter(Header);
