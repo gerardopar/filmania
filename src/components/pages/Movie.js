@@ -28,58 +28,13 @@ class Movie extends Component {
             movie_rating: '',
             related_movies: [],
             hidden: true,
-            showSignupModal: false,
             isLoading: true,
-            Errors: {
-                signup: null
-            }
+            castMembers: []
         };
     }
 
     componentDidMount() {
         this.handleGetMovieDetails();
-        this.handleSimiliarMovies();
-    }
-
-    handleSignupModal = () => {
-        this.setState(prevState => ({
-            showSignupModal: !prevState.showSignupModal
-        }));
-    }
-
-    // method: handles user signup
-    handleSignup = (e) => {
-        e.preventDefault();
-        fetch('https://filmania-rest-api.herokuapp.com/signup', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: e.target.elements.email.value,
-            password: e.target.elements.password.value,
-            movies: []
-        })
-        })
-        .then((res) => {
-            if (res.status === 422) {
-            throw new Error(
-                'Validation failed. Email already in use!'
-            );
-            }
-            if (res.status !== 200 && res.status !== 201) {
-            console.log('Error!');
-            throw new Error('Creating a user failed!');
-            }
-            return res.json();
-        })
-        .then(() => {
-            this.setState({ showSignupModal: false });
-        })
-        .catch((err) => {
-            console.log(err);
-            this.setState({ Errors: { signup: err.message } });
-        });
     }
 
     handleGetMovieDetails = () => {
@@ -95,6 +50,8 @@ class Movie extends Component {
         })
         .then(data => data.json())
         .then((movieData) => {
+            this.handleMovieCast(movieId);
+            this.handleSimiliarMovies(movieId);
             this.setState(({
                 movie_backdrop: movieData.movie.backdrop,
                 movie_id: movieData.movie.id,
@@ -118,9 +75,7 @@ class Movie extends Component {
         });
     }
 
-    handleSimiliarMovies = () => {
-        const movieId = this.props.match.params.id;
-
+    handleSimiliarMovies = (movieId) => {
         // # fetching the movie details
         fetch(`https://filmania-rest-api.herokuapp.com/movies/similar/${movieId}`, {
             method: 'GET',
@@ -133,6 +88,24 @@ class Movie extends Component {
             this.setState(() => ({
                 related_movies: movies.movies
             }));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
+    handleMovieCast = (movieId) => {
+        // # fetching the movie details
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/movie/cast/${movieId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(data => data.json())
+        .then((cast) => {
+            console.log(cast.castMembers[0]);
+            this.setState({ castMembers: cast.castMembers });
         })
         .catch((err) => {
             console.log(err);
@@ -193,12 +166,10 @@ class Movie extends Component {
                   transitionLeaveTimeout={500}
                 >
                     {
-                    this.state.showSignupModal 
+                    this.props.showSignupModal 
                         ? (
                     <SignupModal 
-                      signupError={this.state.Errors.signup}
-                      handleSignup={this.handleSignup}
-                      handleSignupModal={this.handleSignupModal} 
+                      handleSignupModal={this.props.handleSignupModal} 
                     />
                     ) 
                         : null
@@ -209,7 +180,7 @@ class Movie extends Component {
                   hidden={this.state.hidden}
                   handleLogout={this.props.handleLogout}
                   handleLoginModal={this.props.handleLoginModal} 
-                  handleSignupModal={this.handleSignupModal}
+                  handleSignupModal={this.props.handleSignupModal}
                 />
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
@@ -223,6 +194,7 @@ class Movie extends Component {
                         <MovieDetails 
                           handleAddMovieToFav={this.handleAddMovieToFav}
                           handleRedirectHome={this.handleRedirectHome}
+                          castMembers={this.state.castMembers}
                           hidden={this.state.hidden}
                           {...this.state} 
                         />
@@ -240,9 +212,10 @@ Movie.propTypes = {
     isAuth: PropTypes.bool,
     token: PropTypes.string,
     handleLoginModal: PropTypes.func,
+    handleSignupModal: PropTypes.func,
     handleLogout: PropTypes.func,
-    showLoginModal: PropTypes.func,
-    showSignupModal: PropTypes.func,
+    showLoginModal: PropTypes.bool,
+    showSignupModal: PropTypes.bool,
 };
 
 Movie.defaultProps = {
@@ -250,9 +223,10 @@ Movie.defaultProps = {
     isAuth: false,
     token: '',
     handleLoginModal: () => {},
+    handleSignupModal: () => {},
     handleLogout: () => {},
-    showLoginModal: () => {},
-    showSignupModal: () => {}
+    showLoginModal: false,
+    showSignupModal: false
 };
 
 export default Movie;

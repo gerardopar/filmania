@@ -2,12 +2,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 // importing components
 import MovieItem from './MovieItem';
 import NoRelatedMovies from './NoRelatedMovies';
+import CastItem from './CastItem';
 
-const movieDetails = props => (
+const movieDetails = ({ castMembers, ...props }) => (
     <div className="movieDetails">
         <div 
           className="movieDetails__backdrop z-depth-5"
@@ -62,25 +64,36 @@ const movieDetails = props => (
             </div>
         </div>
 
+        <div className="movieDetails__cast">
+            <div className="movieDetails__cast--container">
+                {
+                    castMembers.map(member => (
+                    <CastItem {...member} key={uuidv4()} />
+                    ))
+                }
+            </div>
+        </div>
+        
+
         <div className="movieList__wrap z-depth-5">
             {
                 props.related_movies.length > 0 ? props.related_movies.map(moviesList => (
                     <MovieItem 
                       {...moviesList}
-                      key={props.movie_id}
+                      key={uuidv4()}
                       hidden={props.hidden}
                     />
                 )) : <NoRelatedMovies />
             }
         </div>
     </div>
-);
+    );
 
 movieDetails.propTypes = {
     hidden: PropTypes.bool,
     movie_backdrop: PropTypes.string,
-    movie_genres: PropTypes.string,
-    movie_id: PropTypes.string,
+    movie_genres: PropTypes.arrayOf(PropTypes.string),
+    movie_id: PropTypes.number,
     movie_length: PropTypes.number,
     movie_overview: PropTypes.string,
     movie_poster: PropTypes.string,
@@ -89,14 +102,15 @@ movieDetails.propTypes = {
     movie_title: PropTypes.string,
     movie_trailer: PropTypes.string,
     related_movies: PropTypes.arrayOf(PropTypes.object),
-    handleAddMovieToFav: PropTypes.func
+    handleAddMovieToFav: PropTypes.func,
+    castMembers: PropTypes.arrayOf(PropTypes.object)
 };
 
 movieDetails.defaultProps = {
     hidden: true,
     movie_backdrop: '',
-    movie_genres: '',
-    movie_id: '',
+    movie_genres: [],
+    movie_id: 0,
     movie_length: 0,
     movie_overview: '',
     movie_poster: '',
@@ -105,7 +119,8 @@ movieDetails.defaultProps = {
     movie_title: '',
     movie_trailer: '',
     related_movies: [],
-    handleAddMovieToFav: () => {}
+    handleAddMovieToFav: () => {},
+    castMembers: []
 };
 
 export default movieDetails;
