@@ -26,7 +26,7 @@ const favMovieItem = props => (
 favMovieItem.propTypes = {
     _id: PropTypes.string,
     movie_poster: PropTypes.string,
-    movie_rating: PropTypes.string,
+    movie_rating: PropTypes.number,
     movie_tmdb_id: PropTypes.string,
     handleDeleteMovie: PropTypes.func
 };
@@ -34,7 +34,7 @@ favMovieItem.propTypes = {
 favMovieItem.defaultProps = {
     _id: '',
     movie_poster: '',
-    movie_rating: '',
+    movie_rating: 0,
     movie_tmdb_id: '',
     handleDeleteMovie: () => {}
 };

@@ -41,15 +41,12 @@ class FavoritesPage extends Component {
     handleDeleteMovie = (e, id) => {
         e.preventDefault();
 
-        fetch('https://filmania-rest-api.herokuapp.com/movies/deleteFav', {
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/movie/${id}`, {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            id
-        })
         })
         .then((res) => {
             if (res.status === 422) {

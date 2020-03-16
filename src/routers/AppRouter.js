@@ -42,7 +42,7 @@ class AppRouter extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         // checking if auth token is set
         const token = localStorage.getItem('token');
         const expDate = localStorage.getItem('tokenExpires'); 
