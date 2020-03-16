@@ -1,9 +1,12 @@
 // * importing modules
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {
- BrowserRouter, Route, Switch, Redirect 
+ Router, Route, Switch, Redirect,
 } from 'react-router-dom';
+// importing history module
+import { createBrowserHistory } from 'history';
 import RouteContext from '../context/route-context'; // react context
 // * importing components
 import Dashboard from '../components/pages/Dashboard';
@@ -21,6 +24,8 @@ import FavoritesPage from '../components/pages/FavoritesPage';
 import PageNotFound from '../components/pages/404page';
 // * importing utils
 import { setToken, removeToken } from '../utils/auth';
+// app history initialized
+export const history = createBrowserHistory();
 
 // AppRouter component
 class AppRouter extends Component {
@@ -174,11 +179,13 @@ class AppRouter extends Component {
 
     // method: handles logout
     handleLogout = (e) => {
+        console.log(this.props);
         e.preventDefault();
         this.setState(() => ({
             isAuth: false,
             token: null
         }));
+        history.push('/');
         removeToken();
     }
 
@@ -350,7 +357,7 @@ class AppRouter extends Component {
             
         );
         return (
-            <BrowserRouter>
+            <Router history={history}>
             <div>
             <RouteContext.Provider
               value={{ 
@@ -370,9 +377,18 @@ class AppRouter extends Component {
                 {routes}
             </RouteContext.Provider>
             </div>
-            </BrowserRouter>
+            </Router>
         );
     }
 }
+AppRouter.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any),
+  token: PropTypes.string
+};
+
+AppRouter.defaultProps = {
+  history: {},
+  token: ''
+};
 
 export default AppRouter;

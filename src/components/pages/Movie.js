@@ -133,8 +133,8 @@ class Movie extends Component {
             })
         })
         .then(data => data.json())
-        .then(() => {
-            // console.log(data);
+        .then((movie) => {
+            console.log(movie);
         })
         .catch((err) => {
             console.log(err);

@@ -20,29 +20,6 @@ class FavoritesPage extends Component {
         this.props.token ? this.handleFavMovies() : null;
     }
 
-    handleMovieSearchSubmit = (e) => {
-        e.preventDefault();
-        const movieTitle = e.target.elements.title.value;
-        if (movieTitle === '' || movieTitle.length === 0 || movieTitle === null || movieTitle === undefined) {
-            console.log('no movie searched');
-        } else {
-            fetch('https://filmania-rest-api.herokuapp.com/movies/postMovieSearched', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                movieTitle
-            })
-        })
-        .then(data => data.json())
-        .then((movie) => {
-            this.props.history.push(`/movie/${movie.movieId}`);
-        })
-        .catch(err => (err));
-        }
-    }
-
     handleFavMovies = () => {
         fetch('https://filmania-rest-api.herokuapp.com/movies/favorites', {
             headers: {
@@ -52,12 +29,13 @@ class FavoritesPage extends Component {
         })
         .then(res => res.json())
         .then((data) => {
+            console.log(data);
             this.setState(({ movies: [...data.movies] }));
         })
         .catch((err) => {
             console.log(err);
         });
-}
+    }
     
 
     handleDeleteMovie = (e, id) => {
