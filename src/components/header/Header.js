@@ -17,14 +17,11 @@ class Header extends React.Component {
     if (movieTitle === '' || movieTitle.length === 0 || movieTitle === null || movieTitle === undefined) {
         console.log('no movie searched');
     } else {
-        fetch('https://filmania-rest-api.herokuapp.com/movies/postMovieSearched', {
-        method: 'POST',
+        fetch(`https://filmania-rest-api.herokuapp.com/movies/movie/search/${movieTitle}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            movieTitle
-        })
+        }
     })
     .then(data => data.json())
     .then((movie) => {
