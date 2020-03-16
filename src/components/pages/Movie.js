@@ -104,7 +104,6 @@ class Movie extends Component {
         })
         .then(data => data.json())
         .then((cast) => {
-            console.log(cast.castMembers[0]);
             this.setState({ castMembers: cast.castMembers });
         })
         .catch((err) => {

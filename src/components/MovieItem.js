@@ -1,6 +1,6 @@
 // importing modules
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const movieItem = props => (
@@ -50,4 +50,4 @@ movieItem.defaultProps = {
     vote_average: 0
 };
 
-export default movieItem;
+export default withRouter(movieItem);

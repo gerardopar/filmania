@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const CastItem = ({ character, name, ...props }) => (
     <div className="movieDetails__cast--member">
-        <img className="movieDetails__cast--member--img" src={`https://image.tmdb.org/t/p/w500/${props.profile_path}`} alt="cast memeber" />
+        <img className="movieDetails__cast--member--img z-depth-5" src={`https://image.tmdb.org/t/p/w500/${props.profile_path}`} alt="cast memeber" />
         <p className="movieDetails__cast--member--name">{name}</p>
         <p className="movieDetails__cast--member--char">{character}</p>
     </div>
