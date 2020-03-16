@@ -122,7 +122,7 @@ class Movie extends Component {
         };
 
         e.preventDefault();
-        fetch('https://filmania-rest-api.herokuapp.com/movies/addToFav', {
+        fetch('https://filmania-rest-api.herokuapp.com/movies/movie', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
