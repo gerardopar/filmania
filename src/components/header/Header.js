@@ -85,7 +85,7 @@ class Header extends React.Component {
                         )
                         : (
                         <div>
-                            <NavLink to="/favorites" className="btn-small waves-effect waves-light header__form--btn--favorites">FAVORITES</NavLink>
+                            <NavLink to="/favorites" className="btn-small waves-effect waves-light header__form--btn--favorites">WATCHLIST</NavLink>
                             <button 
                               onClick={routeContext.handleLogout} 
                               className="btn-small waves-effect waves-light header__form--btn--signout"

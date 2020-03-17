@@ -43,6 +43,26 @@
     border: none;
 }
 
+.header__form--btn--watchlist{
+    background-color: none !important;
+    background: none !important;
+    border: solid 1px #04D473;
+    color: #04D473;
+    padding: 8px 8px;
+    margin-right: 10px;
+    transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    &:hover{
+        background-color: #04D473!important;
+        background: #04D473  !important;
+        border: solid 1px #04D473;
+        color: $navy;
+    }
+}
+
 .home{
     margin-left: 10px;
 }   

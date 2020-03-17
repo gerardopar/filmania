@@ -29,11 +29,11 @@ const movieDetails = ({ castMembers, ...props }) => (
             </p>
             <div className="movieDetails__btn--favorite--wrap">
                 <button 
-                  className="material-icons waves-effect waves-light movieDetails__btn--favorite" 
+                  className="waves-effect waves-light header__form--btn--watchlist" 
                   onClick={e => props.handleAddMovieToFav(e, props.movie_id, props.movie_poster, props.movie_title, props.movie_rating)}
                   type="button"
                 >
-                queue
+                ADD TO WATCHLIST
                 </button>
                 <NavLink 
                   to="/"
