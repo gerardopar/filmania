@@ -6,6 +6,7 @@ import Header from '../header/Header';
 // import Spinner from '../spinner/Spinner';
 import Navigation from '../nav/Navigation';
 import FavMovieItem from '../FavMovieItem';
+import Spinner from '../spinner/Spinner';
 
 class FavoritesPage extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class FavoritesPage extends Component {
 
         this.state = { // initial state
             movies: [],
+            isLoading: true
             // sortBy: 'rating'
         };
     }
@@ -49,7 +51,7 @@ class FavoritesPage extends Component {
         .then(res => res.json())
         .then((data) => {
             console.log(data);
-            this.setState(({ movies: [...data.movies] }));
+            this.setState(({ movies: [...data.movies], isLoading: false }));
         })
         .catch((err) => {
             console.log(err);
@@ -97,19 +99,24 @@ class FavoritesPage extends Component {
                         <Navigation />
                     </div>
                     <div className="layout__col--two z-depth-5">
-                        <div className="movieList__wrap z-depth-5">
                         {
-                        this.state.movies.length === 0 
-                            ? <p>START ADDING MOVIES TO BEGIN</p>
-                            : this.state.movies.map(movie => (
-                                <FavMovieItem 
-                                  handleDeleteMovie={this.handleDeleteMovie}
-                                  {...movie}
-                                  key={movie._id}
-                                />
-                            ))
-                        }
+                            this.state.isLoading ? <Spinner /> 
+                        : (
+                        <div className="movieList__wrap z-depth-5">
+                            {
+                            this.state.movies.length === 0 
+                                ? <p>START ADDING MOVIES TO BEGIN</p>
+                                : this.state.movies.map(movie => (
+                                    <FavMovieItem 
+                                      handleDeleteMovie={this.handleDeleteMovie}
+                                      {...movie}
+                                      key={movie._id}
+                                    />
+                                ))
+                            }
                         </div>
+                        )
+                        }
                     </div>
                 </div>
             </div>
