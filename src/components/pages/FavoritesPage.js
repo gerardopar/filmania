@@ -105,7 +105,7 @@ class FavoritesPage extends Component {
                         <div className="movieList__wrap z-depth-5">
                             {
                             this.state.movies.length === 0 
-                                ? <p>START ADDING MOVIES TO BEGIN</p>
+                                ? <div className="noWatchList"><p className="noWatchList__text">Your watchlist is currently empty</p></div>
                                 : this.state.movies.map(movie => (
                                     <FavMovieItem 
                                       handleDeleteMovie={this.handleDeleteMovie}
