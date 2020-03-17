@@ -9,6 +9,7 @@ import LoginModal from '../modals/LoginModal';
 import SignupModal from '../modals/SignupModal';
 import Navigation from '../nav/Navigation';
 import MovieDetails from '../MovieDetails';
+import ConfirmationBar from '../confirmationBar/ConfirmationBar';
 import Spinner from '../spinner/Spinner';
 
 class Movie extends Component {
@@ -29,12 +30,33 @@ class Movie extends Component {
             related_movies: [],
             hidden: true,
             isLoading: true,
-            castMembers: []
+            castMembers: [],
+            favMovies: [],
+            showConfirmation: false,
+            showConfirmationError: false
         };
     }
 
     componentDidMount() {
         this.handleGetMovieDetails();
+        this.props.token ? this.handleFavMovies() : null;
+    }
+
+    handleFavMovies = () => {
+        fetch('https://filmania-rest-api.herokuapp.com/movies/favorites', {
+            headers: {
+                Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then((data) => {
+            console.log('favorites', data);
+            this.setState(({ favMovies: [...data.movies] }));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     }
 
     handleGetMovieDetails = () => {
@@ -50,6 +72,7 @@ class Movie extends Component {
         })
         .then(data => data.json())
         .then((movieData) => {
+            console.log('movie details', movieData);
             this.handleMovieCast(movieId);
             this.handleSimiliarMovies(movieId);
             this.setState(({
@@ -121,8 +144,18 @@ class Movie extends Component {
             movie_rating: rating
         };
 
-        e.preventDefault();
-        fetch('https://filmania-rest-api.herokuapp.com/movies/movie', {
+        const { favMovies } = this.state;
+        const movieExists = favMovies.find(movie => movie.movie_title === title);
+
+        if (movieExists) {
+            if (this.props.token) {
+                this.setState({ showConfirmationError: true });
+                setTimeout(() => {
+                    this.setState({ showConfirmationError: false });
+                }, 2500);
+            }
+        } else {
+            fetch('https://filmania-rest-api.herokuapp.com/movies/movie', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
@@ -131,14 +164,22 @@ class Movie extends Component {
             body: JSON.stringify({
                 movieToAdd
             })
-        })
-        .then(data => data.json())
-        .then((movie) => {
-            console.log(movie);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+            })
+            .then(data => data.json())
+            .then((movie) => {
+                console.log(movie);
+                this.handleFavMovies();
+                if (this.props.token) {
+                    this.setState({ showConfirmation: true });
+                    setTimeout(() => {
+                        this.setState({ showConfirmation: false });
+                    }, 2500);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     }
 
     render() {
@@ -201,6 +242,24 @@ class Movie extends Component {
                         }
                     </div>
                 </div>
+                {
+                    this.state.showConfirmation 
+                        ? (
+                            <ConfirmationBar customClass="confirmation" text="Movie successfully added to watchList!" />     
+                        )
+                        : (
+                            <ConfirmationBar customClass="confirmation__none" text="Movie successfully added to watchList!" />    
+                        )
+                }
+                {
+                    this.state.showConfirmationError
+                        ? (
+                            <ConfirmationBar customClass="confirmationError" text="Movie already exists in watchlist!" />        
+                        )
+                        : (
+                            <ConfirmationBar customClass="confirmationError__none" text="Movie already exists in watchlist!" />     
+                        )
+                }
             </div>
         );
     }

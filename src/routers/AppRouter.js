@@ -122,6 +122,7 @@ class AppRouter extends Component {
                 showLoginModal: false
             }));
             setToken(user.userId, user.token);
+            history.push('/');
         })
         .catch((err) => {
             console.log(err);

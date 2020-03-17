@@ -42,8 +42,6 @@ $ npm run build
 
 ### Todos
 
- - Add more features
- - Add Redux
  - Write tests with Jest & Enzyme
 
 

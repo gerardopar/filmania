@@ -1,0 +1,67 @@
+.confirmation{
+    align-items: center;
+    background-color: springgreen;
+    border-radius: 2px;
+    bottom: 60px;
+    display: flex;
+    height: 50px;
+    left: 10px;
+    justify-content: center;
+    position: absolute;
+    transition: all 1s ease-out;
+    width: 300px;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -ms-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    &__none{
+        align-items: center;
+        background-color: springgreen;
+        bottom: 60px;
+        display: flex;
+        height: 50px;
+        left: -1000px;
+        justify-content: center;
+        position: absolute;
+        transition: all 1s ease-out;
+        width: 300px;
+        -webkit-transition: all 1s ease-out;
+        -moz-transition: all 1s ease-out;
+        -ms-transition: all 1s ease-out;
+        -o-transition: all 1s ease-out;
+    }
+}
+
+.confirmationError{
+    align-items: center;
+    background-color: rgb(255, 81, 0);
+    border-radius: 2px;
+    bottom: 60px;
+    display: flex;
+    height: 50px;
+    left: 10px;
+    justify-content: center;
+    position: absolute;
+    transition: all 1s ease-out;
+    width: 300px;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -ms-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    &__none{
+        align-items: center;
+        background-color: rgb(255, 81, 0);
+        bottom: 60px;
+        display: flex;
+        height: 50px;
+        left: -1000px;
+        justify-content: center;
+        position: absolute;
+        transition: all 1s ease-out;
+        width: 300px;
+        -webkit-transition: all 1s ease-out;
+        -moz-transition: all 1s ease-out;
+        -ms-transition: all 1s ease-out;
+        -o-transition: all 1s ease-out;
+    }
+}
