@@ -31,7 +31,7 @@ const mobileNavigation = props => (
                 : (
                 <React.Fragment>
                     <button type="button" onClick={routeContext.handleLogout} className="mobile__nav--btn--signout">SIGN OUT</button>
-                    <NavLink to="/favorites" className="mobile__nav--item">FAVORITES</NavLink>
+                    <NavLink to="/favorites" className="mobile__nav--item">WATCHLIST</NavLink>
                 </React.Fragment>
                 )
             }
