@@ -70,7 +70,7 @@ class Dashboard extends Component {
         .then(res => res.json())
         .then((data) => {
             this.setState(prevState => ({
-                movies: [...prevState.movies, ...data.movies]
+                    movies: [...prevState.movies, ...data.movies]
             }));
         })
         .catch((err) => {

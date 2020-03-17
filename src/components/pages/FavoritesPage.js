@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // * importing components
 import Header from '../header/Header';
-import Spinner from '../spinner/Spinner';
+// import Spinner from '../spinner/Spinner';
 import Navigation from '../nav/Navigation';
 import FavMovieItem from '../FavMovieItem';
 
@@ -12,13 +12,32 @@ class FavoritesPage extends Component {
         super(props);
 
         this.state = { // initial state
-            movies: []
+            movies: [],
+            // sortBy: 'rating'
         };
     }
 
     componentDidMount() {
         this.props.token ? this.handleFavMovies() : null;
     }
+
+    handleUserInput = () => {
+        const { value, name } = e.target;
+        this.setState(prevState => ({
+            isLoading: !prevState.isLoading,
+            [name]: value
+        }));
+    };
+
+    // handleUserInput = (e) => {
+    //     const { value, name } = e.target;
+    //     const { movies } = this.state;
+    //     const sortedMovies = sortMovies(movies, value);
+    //     this.setState({
+    //         [name]: value,
+    //         movies: sortedMovies
+    //     });
+    // };
 
     handleFavMovies = () => {
         fetch('https://filmania-rest-api.herokuapp.com/movies/favorites', {
@@ -81,7 +100,7 @@ class FavoritesPage extends Component {
                         <div className="movieList__wrap z-depth-5">
                         {
                         this.state.movies.length === 0 
-                            ? <Spinner />
+                            ? <p>START ADDING MOVIES TO BEGIN</p>
                             : this.state.movies.map(movie => (
                                 <FavMovieItem 
                                   handleDeleteMovie={this.handleDeleteMovie}
