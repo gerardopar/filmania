@@ -102,7 +102,7 @@ class FavoritesPage extends Component {
                         {
                             this.state.isLoading ? <Spinner /> 
                         : (
-                        <div className="movieList__wrap z-depth-5">
+                        <div className="favMovieList__wrap z-depth-5">
                             {
                             this.state.movies.length === 0 
                                 ? <div className="noWatchList"><p className="noWatchList__text">Your watchlist is currently empty</p></div>

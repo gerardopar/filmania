@@ -141,7 +141,7 @@ class DramaPage extends Component {
                             routeContext.showMobileNav 
                                 ? (
                                 <MobileNavigation 
-                                  handleSignupModal={this.handleSignupModal}
+                                  handleSignupModal={this.props.handleSignupModal}
                                   handleMobileNav={routeContext.handleMobileNav} 
                                 />
                                 ) 
