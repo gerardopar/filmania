@@ -19,6 +19,10 @@
     -o-transition: all .5s ease;
 }
 
+.movieItem__text{
+    color: $off-white;
+}
+
 .movieDetails__rating--wrap{
     align-items: center;
     border-radius: 2px;

@@ -63,8 +63,7 @@ class SignupModal extends React.Component {
                 }
                 return res.json();
             })
-            .then((data) => {
-                console.log(data);
+            .then(() => {
                 this.props.handleSignupModal();
             })
             .catch((err) => {
