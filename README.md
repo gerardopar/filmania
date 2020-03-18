@@ -10,10 +10,10 @@ Filmania is a Single Page Web Application, that utilizes the TMDB api in order t
 - View movies based on Genres.
 ![dashboard](docs/filmania-dashboard.gif)
 - View specific movie details & trailers based on a *Movie Search*.
-![search-movies](docs/filmania-search.gif)
 - Get a list of related movies based on a users query.
-![filter-movies](docs/filmania-filter.gif)
+![search-movies](docs/filmania-search.gif)
 - Users can *Sign Up* or *Login to* save movies to a *favorites list* or *watch list*.
+
 
 ### TECH
   - React.js - ( Front-End )
