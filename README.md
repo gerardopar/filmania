@@ -13,6 +13,7 @@ Filmania is a Single Page Web Application, that utilizes the TMDB api in order t
 - Get a list of related movies based on a users query.
 ![search-movies](docs/filmania-search.gif)
 - Users can *Sign Up* or *Login to* save movies to a *favorites list* or *watch list*.
+![watchlist](docs/filmania-watchlist.gif)
 
 
 ### TECH
