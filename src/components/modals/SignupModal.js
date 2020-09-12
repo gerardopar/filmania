@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 // importing react context
 import RouteContext from '../../context/route-context';
 
+// TODO: convert class based component to react-hooks
+// TODO: add react-hooks form validation
+// TODO: remove context
+
 class SignupModal extends React.Component {
     constructor(props) {
         super(props);
