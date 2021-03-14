@@ -1,7 +1,7 @@
+/* eslint-disable */ 
 // * importing modules
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import PropTypes from 'prop-types';
 
 // * importing components
 import Header from '../header/Header';
@@ -12,59 +12,46 @@ import MovieDetails from '../MovieDetails';
 import ConfirmationBar from '../confirmationBar/ConfirmationBar';
 import Spinner from '../spinner/Spinner';
 
-class Movie extends Component {
-    constructor(props) {
-        super(props);
+const Movie = (props) =>  {
+    const [movieData, setMovieData] = useState({});
+    const [relatedMovies, setRelatedMovies] = useState([]);
+    const [cast, setCast] = useState([]);
+    const [favMovies, setfavMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isHidden, setIsHidden] = useState(true);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showCopyConfirmation, setShowCopyConfirmation] = useState(false);
+    const [showConfirmationError, setShowConfirmationError] = useState(false);
 
-        this.state = {
-            movie_backdrop: '',
-            movie_genres: [],
-            movie_overview: '',
-            movie_id: '',
-            movie_length: '',
-            movie_poster: null,
-            movie_rdate: '',
-            movie_title: null,
-            movie_trailer: '',
-            movie_rating: '',
-            related_movies: [],
-            hidden: true,
-            isLoading: true,
-            castMembers: [],
-            favMovies: [],
-            showConfirmation: false,
-            showConfirmationError: false
-        };
-    }
+    useEffect(() => {
+        handleGetMovieDetails();
+        props.token ? handleFavMovies() : null;
+    }, []);
 
-    componentDidMount() {
-        this.handleGetMovieDetails();
-        this.props.token ? this.handleFavMovies() : null;
-    }
-
-    handleFavMovies = () => {
+    const handleFavMovies = () => {
         fetch('https://filmania-rest-api.herokuapp.com/movies/favorites', {
             headers: {
-                Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
+                Authorization: `Bearer ${props.token}`, // required to authenticate the user
                 'Content-Type': 'application/json'
             }
         })
         .then(res => res.json())
         .then((data) => {
-            console.log('favorites', data);
-            this.setState(({ favMovies: [...data.movies] }));
+            // console.log('favorites', data);
+            setfavMovies([...data.movies]);
         })
         .catch((err) => {
             console.log(err);
         });
     }
 
-    handleGetMovieDetails = () => {
+    const handleGetMovieDetails = () => {
         // get params id
-        const movieId = this.props.match.params.id;
+        const movieId = props.match.params.id;
 
         // # fetching the movie details
         fetch(`https://filmania-rest-api.herokuapp.com/movies/movie/details/${movieId}`, {
+        // fetch(`http://localhost:3030/movies/movie/details/${movieId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,32 +60,17 @@ class Movie extends Component {
         .then(data => data.json())
         .then((movieData) => {
             console.log('movie details', movieData);
-            this.handleMovieCast(movieId);
-            this.handleSimiliarMovies(movieId);
-            this.setState(({
-                movie_backdrop: movieData.movie.backdrop,
-                movie_id: movieData.movie.id,
-                movie_length: movieData.movie.length,
-                movie_overview: movieData.movie.overview,
-                movie_poster: movieData.movie.poster,
-                movie_rating: movieData.movie.rating,
-                movie_rdate: movieData.movie.rdate,
-                movie_title: movieData.movie.title,
-                movie_trailer: movieData.movie.video,
-                isLoading: false
-            }));
-            movieData.movie.genres.forEach((movie) => {
-                this.setState(prevState => ({
-                    movie_genres: prevState.movie_genres.concat(` - ${movie.name}`)
-                }));
-            });
+            handleSimiliarMovies(movieId);
+            handleMovieCast(movieId);
+            setMovieData({...movieData.data});
+            setIsLoading(!isLoading);
         })
         .catch((err) => {
             console.log(err);
         });
     }
 
-    handleSimiliarMovies = (movieId) => {
+    const handleSimiliarMovies = (movieId) => {
         // # fetching the movie details
         fetch(`https://filmania-rest-api.herokuapp.com/movies/similar/${movieId}`, {
             method: 'GET',
@@ -108,16 +80,15 @@ class Movie extends Component {
         })
         .then(data => data.json())
         .then((movies) => {
-            this.setState(() => ({
-                related_movies: movies.movies
-            }));
+            // console.log('related movies', movies);
+            setRelatedMovies([...movies.movies]);
         })
         .catch((err) => {
             console.log(err);
         });
     }
 
-    handleMovieCast = (movieId) => {
+    const handleMovieCast = (movieId) => {
         // # fetching the movie details
         fetch(`https://filmania-rest-api.herokuapp.com/movies/movie/cast/${movieId}`, {
             method: 'GET',
@@ -127,14 +98,15 @@ class Movie extends Component {
         })
         .then(data => data.json())
         .then((cast) => {
-            this.setState({ castMembers: cast.castMembers });
+            // console.log('member cast', cast);
+            setCast([...cast.castMembers]);
         })
         .catch((err) => {
             console.log(err);
         });
     }
 
-    handleAddMovieToFav = (e, id, poster, title, rating) => {
+    const handleAddMovieToFav = (e, id, poster, title, rating) => {
         e.preventDefault();
 
         const movieToAdd = {
@@ -144,21 +116,20 @@ class Movie extends Component {
             movie_rating: rating
         };
 
-        const { favMovies } = this.state;
         const movieExists = favMovies.find(movie => movie.movie_title === title);
 
         if (movieExists) {
-            if (this.props.token) {
-                this.setState({ showConfirmationError: true });
+            if (props.token) {
+                setShowConfirmationError(true);
                 setTimeout(() => {
-                    this.setState({ showConfirmationError: false });
+                    setShowConfirmationError(false)
                 }, 2500);
             }
         } else {
             fetch('https://filmania-rest-api.herokuapp.com/movies/movie', {
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${this.props.token}`, // required to authenticate the user
+                Authorization: `Bearer ${props.token}`, // required to authenticate the user
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -167,12 +138,12 @@ class Movie extends Component {
             })
             .then(data => data.json())
             .then((movie) => {
-                console.log(movie);
-                this.handleFavMovies();
-                if (this.props.token) {
-                    this.setState({ showConfirmation: true });
+                // console.log(movie);
+                handleFavMovies();
+                if (props.token) {
+                    setShowConfirmation(true);
                     setTimeout(() => {
-                        this.setState({ showConfirmation: false });
+                        setShowConfirmation(false);
                     }, 2500);
                 }
             })
@@ -182,45 +153,51 @@ class Movie extends Component {
         }
     }
 
-    render() {
+    const handleCopyConfirmation = () => {
+        setShowCopyConfirmation(true);
+        setTimeout(() => {
+            setShowCopyConfirmation(false);
+        }, 2500);
+    };
+
         return (
             <div>
                 <ReactCSSTransitionGroup
-                  transitionName="trans"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={500}
+                    transitionName="trans"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
                 >
                     {
-                    this.props.showLoginModal 
+                    props.showLoginModal 
                         ? (
                     <LoginModal
-                      handleLoginModal={this.props.handleLoginModal} 
+                        handleLoginModal={props.handleLoginModal} 
                     />
                         ) 
                         : null
                     }
                 </ReactCSSTransitionGroup>
                 <ReactCSSTransitionGroup
-                  transitionName="trans"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={500}
+                    transitionName="trans"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
                 >
                     {
-                    this.props.showSignupModal 
+                    props.showSignupModal 
                         ? (
                     <SignupModal 
-                      handleSignupModal={this.props.handleSignupModal} 
+                        handleSignupModal={props.handleSignupModal} 
                     />
                     ) 
                         : null
                     }
                 </ReactCSSTransitionGroup>
                 <Header 
-                  isAuth={this.props.isAuth}
-                  hidden={this.state.hidden}
-                  handleLogout={this.props.handleLogout}
-                  handleLoginModal={this.props.handleLoginModal} 
-                  handleSignupModal={this.props.handleSignupModal}
+                    isAuth={props.isAuth}
+                    hidden={isHidden}
+                    handleLogout={props.handleLogout}
+                    handleLoginModal={props.handleLoginModal} 
+                    handleSignupModal={props.handleSignupModal}
                 />
                 <div className="layout">
                     <div className="layout__col--one z-depth-5">
@@ -228,22 +205,24 @@ class Movie extends Component {
                     </div>
                     <div className="layout__col--two z-depth-5">
                         {
-                        this.state.isLoading 
-                             ? <Spinner /> 
-                             : (
+                        isLoading 
+                            ? <Spinner /> 
+                            : (
                         <MovieDetails 
-                          handleAddMovieToFav={this.handleAddMovieToFav}
-                          handleRedirectHome={this.handleRedirectHome}
-                          castMembers={this.state.castMembers}
-                          hidden={this.state.hidden}
-                          {...this.state} 
+                            favMovies={favMovies}
+                            handleAddMovieToFav={handleAddMovieToFav}
+                            handleCopyConfirmation={handleCopyConfirmation}
+                            movieData={movieData}
+                            relatedMovies={relatedMovies}
+                            castMembers={cast}
+                            hidden={isHidden}
                         />
                         )
                         }
                     </div>
                 </div>
                 {
-                    this.state.showConfirmation 
+                    showConfirmation 
                         ? (
                             <ConfirmationBar customClass="confirmation" text="Movie successfully added to watchList!" />     
                         )
@@ -252,7 +231,7 @@ class Movie extends Component {
                         )
                 }
                 {
-                    this.state.showConfirmationError
+                    showConfirmationError
                         ? (
                             <ConfirmationBar customClass="confirmationError" text="Movie already exists in watchlist!" />        
                         )
@@ -260,31 +239,17 @@ class Movie extends Component {
                             <ConfirmationBar customClass="confirmationError__none" text="Movie already exists in watchlist!" />     
                         )
                 }
+                {
+                    showCopyConfirmation
+                        ? (
+                            <ConfirmationBar customClass="confirmation" text="Link Copied!" />        
+                        )
+                        : (
+                            <ConfirmationBar customClass="confirmation__none" text="Link Copied!" />     
+                        )
+                }
             </div>
         );
-    }
 }
-
-Movie.propTypes = {
-    match: PropTypes.objectOf(PropTypes.any),
-    isAuth: PropTypes.bool,
-    token: PropTypes.string,
-    handleLoginModal: PropTypes.func,
-    handleSignupModal: PropTypes.func,
-    handleLogout: PropTypes.func,
-    showLoginModal: PropTypes.bool,
-    showSignupModal: PropTypes.bool,
-};
-
-Movie.defaultProps = {
-    match: {},
-    isAuth: false,
-    token: '',
-    handleLoginModal: () => {},
-    handleSignupModal: () => {},
-    handleLogout: () => {},
-    showLoginModal: false,
-    showSignupModal: false
-};
 
 export default Movie;

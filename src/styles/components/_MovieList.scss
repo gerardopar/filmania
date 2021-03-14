@@ -1,3 +1,18 @@
+.moviesList__title--container {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.moviesList__title{
+    color: #fff;
+    font-weight: bolder;
+    padding: 0px 16px;
+    margin: 0;
+}
+
 .movieList__wrap{
     align-items: flex-start;
     background-color: $blue;
@@ -12,7 +27,21 @@
     position: relative;
     text-align: center;
     width: 100%;
-
+}
+.movieList__wrap--short--padding{
+    align-items: flex-start;
+    background-color: $blue;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    // height: 100%;
+    // overflow-y: scroll;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    position: relative;
+    text-align: center;
+    width: 100%;
 }
 
 .favMovieList__wrap{
