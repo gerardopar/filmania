@@ -1,21 +1,33 @@
+/* eslint-disable */ 
 // importing modules
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const movieItem = props => (
+const movieItem = props => {
+    const relatedItemRedirect = useRef(null);
+    const handleRedirect = () => { relatedItemRedirect.current.click(); };
+
+    return (
     <div className="movieItem__wrap">
         {
             props.hidden ? (
             <React.Fragment>
                 <div className="movieDetails__rating--wrap z-depth-5">
+                    <a 
+                        ref={relatedItemRedirect} 
+                        href={`/movie/${props.id}`} 
+                        style={{ display: "none"
+                    }}
+                    />
                     <i className="material-icons movieDetails__icon">star</i>
                     <p className="movieDetails__text">{props.vote_average}</p>
                 </div>
                 <img 
-                  className="movieItem__poster z-depth-5" 
-                  src={props.poster_path !== null ? `https://image.tmdb.org/t/p/w500/${props.poster_path}` : 'https://s3-ap-southeast-1.amazonaws.com/silverscreen-photos/1534489151m000001.jpg'}
-                  alt="movie poster"
+                    onClick={handleRedirect}
+                    className="movieItem__poster z-depth-5" 
+                    src={props.poster_path !== null ? `https://image.tmdb.org/t/p/w500/${props.poster_path}` : 'https://s3-ap-southeast-1.amazonaws.com/silverscreen-photos/1534489151m000001.jpg'}
+                    alt="movie poster"
                 />
             </React.Fragment>
             )
@@ -26,15 +38,16 @@ const movieItem = props => (
                     <p className="movieDetails__text">{props.vote_average}</p>
                 </div>
                 <img
-                  className="movieItem__poster z-depth-5"
-                  src={props.poster_path !== null ? `https://image.tmdb.org/t/p/w500/${props.poster_path}` : 'https://s3-ap-southeast-1.amazonaws.com/silverscreen-photos/1534489151m000001.jpg'}
-                  alt="movie poster"
+                    className="movieItem__poster z-depth-5"
+                    src={props.poster_path !== null ? `https://image.tmdb.org/t/p/w500/${props.poster_path}` : 'https://s3-ap-southeast-1.amazonaws.com/silverscreen-photos/1534489151m000001.jpg'}
+                    alt="movie poster"
                 />
             </Link>
             )
         }
     </div>
-);
+    );
+};
 
 movieItem.propTypes = {
     hidden: PropTypes.bool,

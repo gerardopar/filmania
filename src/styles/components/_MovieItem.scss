@@ -25,32 +25,33 @@
 
 .movieDetails__rating--wrap{
     align-items: center;
-    border-radius: 2px;
-    background-color: rgb(104, 135, 172);
+    border-radius: 100px;
+    background: $navy;
+    border: solid 2px #04d4733e;
     color: $navy;
     position: absolute;
     display: flex;
     justify-content: space-around;
-    padding: 2px;
-    top: -4%;
-    right: 20%;
+    padding: 16px;
+    right: 0%;
+    top: -6%;
+    text-align: center;
     width: 48px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -o-border-radius: 2px;
     z-index: 2;
 }
 
-// .movieDetails__icon{
+.movieDetails__icon{
+    font-size: 1.2rem;
+    color: goldenrod;
+}
 
-// }
-
-// .movieDetails__text{
-
-// }
+.movieDetails__text{
+    font-size: 1rem;
+    color: #fff;
+}
 
 .movieItem__poster:hover{
+    cursor: pointer;
     filter: brightness(115%);
     -webkit-filter: brightness(115%);
 }
@@ -106,5 +107,7 @@
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
-
+    .movieDetails__rating--wrap{
+        right: 20%;
+    }
 }
