@@ -79,7 +79,7 @@ const Header = ({ handleMovieSearch, hidden }) => {
                       )
                       : (
                       <div>
-                          <NavLink to="/favorites" className="btn-small waves-effect waves-light header__form--btn--favorites">WATCHLIST</NavLink>
+                          <NavLink to="/favorites" className="btn-small waves-effect waves-light header__form--btn--favorites">Favorites</NavLink>
                           <button 
                             onClick={handleLogout} 
                             className="btn-small waves-effect waves-light header__form--btn--signout"
